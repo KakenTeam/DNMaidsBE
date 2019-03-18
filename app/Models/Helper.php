@@ -40,4 +40,9 @@ class Helper extends Authenticatable
     protected $casts = [
         'birthday' => 'date',
     ];
+
+    public function setPasswordAttribute($value)
+    {
+        return $this->attributes['password'] = bcrypt($value);
+    }
 }
