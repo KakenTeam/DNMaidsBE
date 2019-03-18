@@ -7,10 +7,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class Helper extends Authenticatable
 {
     use Notifiable, HasApiTokens;
 
+    protected $guard = "helpers";
     /**
      * The attributes that are mass assignable.
      *
