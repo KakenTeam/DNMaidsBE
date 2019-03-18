@@ -13,9 +13,9 @@ class CreateHelperTable extends Migration
      */
     public function up()
     {
-        Schema::create('helper', function (Blueprint $table) {
+        Schema::create('helpers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('role_id');
+            $table->unsignedInteger('role_id')->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->nullable();
