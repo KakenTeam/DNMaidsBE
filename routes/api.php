@@ -12,7 +12,8 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group(['namespace' => 'V1\Api', 'middleware' => 'cors'], function () {
+//, 'middleware' => 'cors'
+Route::group(['namespace' => 'V1\Api'], function () {
 
     Route::resource('helpers', 'HelperController');
 
