@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1\Api;
 
 use App\Http\Requests\StoreHelperRequest;
+use App\Http\Requests\UpdateHelperRequest;
 use App\Models\Helper;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ class HelperController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
+     * @return  422 if validate fails
      * @return \Illuminate\Http\Response
      */
     public function store(StoreHelperRequest $request)
@@ -77,9 +79,10 @@ class HelperController extends Controller
      *
      * @param  \Illuminate\Http\Request $request
      * @param  int $id
+     * @return  422 if validate fails
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Helper $helper)
+    public function update(UpdateHelperRequest $request, Helper $helper)
     {
         $helper->update($request->all());
 
