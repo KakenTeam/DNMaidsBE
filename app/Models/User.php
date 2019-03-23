@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Helper extends Authenticatable
+class User extends Authenticatable
 {
-    use Notifiable, HasApiTokens;
+    use Notifiable, HasApiTokens, SoftDeletes;
 
-    protected $guard = "helpers";
     /**
      * The attributes that are mass assignable.
      *
@@ -19,8 +18,7 @@ class Helper extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'password',
-        'birthday', 'gender', 'address', 'phone',
-        'role_id'
+        'birthday', 'gender', 'address', 'phone'
     ];
 
     /**

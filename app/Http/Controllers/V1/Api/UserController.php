@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\V1\Api;
 
-use App\Http\Requests\StoreHelperRequest;
-use App\Http\Requests\UpdateHelperRequest;
-use App\Models\Helper;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class HelperController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -38,17 +37,17 @@ class HelperController extends Controller
      * @return  422 if validate fails
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreHelperRequest $request)
+    public function store(StoreUserRequest $request)
     {
-        $helper = new Helper();
-        $helper->fill($request->all());
-        if ($helper->save())
+        $user = new User();
+        $user->fill($request->all());
+        if ($user->save())
             return response()->json([
-                'info' => $helper,
-                'message' => 'Successfully created helper!'
+                'info' => $user,
+                'message' => 'Successfully created User!'
             ], 201);
         return response()->json([
-            'message' => 'Failed to create helper!',
+            'message' => 'Failed to create User!',
         ],500);
     }
 
@@ -82,11 +81,11 @@ class HelperController extends Controller
      * @return  422 if validate fails
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateHelperRequest $request, Helper $helper)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $helper->update($request->all());
+        $user->update($request->all());
         return response()->json([
-            'message' => "Successfully Updated Helper"
+            'message' => "Successfully Updated User"
         ], 200);
     }
 
@@ -96,18 +95,15 @@ class HelperController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Helper $helper)
+    public function destroy(User $user)
     {
-        $result = $helper->delete();
+        $result = $user->delete();
 
         if ($result) {
-            return response()->json([
-                'message' => "Successfuly Deleted Helper",
-                'info' => $helper,
-            ],200);
+            return response()->json('',204);
         }
         return response()->json([
-            'message' => 'Failed To Delete Helper',
+            'message' => 'Failed To Delete User',
         ],500);
     }
 }
