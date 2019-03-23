@@ -49,7 +49,7 @@ class HelperController extends Controller
             ], 201);
         return response()->json([
             'message' => 'Failed to create helper!',
-        ]);
+        ],500);
     }
 
     /**
@@ -85,7 +85,6 @@ class HelperController extends Controller
     public function update(UpdateHelperRequest $request, Helper $helper)
     {
         $helper->update($request->all());
-
         return response()->json([
             'message' => "Successfully Updated Helper"
         ], 200);
@@ -99,6 +98,16 @@ class HelperController extends Controller
      */
     public function destroy(Helper $helper)
     {
-        //
+        $result = $helper->delete();
+
+        if ($result) {
+            return response()->json([
+                'message' => "Successfuly Deleted Helper",
+                'info' => $helper,
+            ],200);
+        }
+        return response()->json([
+            'message' => 'Failed To Delete Helper',
+        ],500);
     }
 }
