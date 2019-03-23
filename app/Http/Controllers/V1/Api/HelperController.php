@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\Api;
 
+use App\Http\Requests\StoreHelperRequest;
 use App\Models\Helper;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -35,7 +36,7 @@ class HelperController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreHelperRequest $request)
     {
         $helper = new Helper();
         $helper->fill($request->all());
