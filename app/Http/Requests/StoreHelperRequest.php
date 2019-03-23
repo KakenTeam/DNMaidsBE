@@ -27,7 +27,7 @@ class StoreHelperRequest extends FormRequest
             'name' => 'required',
             'password' => 'required|min:6',
             'password_confirmation' => 'required|same:password',
-            'email' => 'required|unique:helpers|unique:users',
+            'email' => 'required|unique:helpers|unique:customers',
             'birthday' => 'required|date_format:Y-m-d|before:today',
             'phone' => 'required| numeric| digits_between:5,20',
             'address' => 'required',
