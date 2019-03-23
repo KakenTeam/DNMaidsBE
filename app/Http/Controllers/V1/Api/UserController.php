@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\Api;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -17,7 +18,11 @@ class UserController extends Controller
      */
     public function index()
     {
+        $user = User::where('status', '1')->paginate(10);
 
+        return response()->json([
+            UserResource::collection($user),
+        ], 200);
     }
 
     /**
@@ -44,11 +49,11 @@ class UserController extends Controller
         if ($user->save())
             return response()->json([
                 'info' => $user,
-                'message' => 'Successfully created User!'
+                'message' => 'Successfully created User!',
             ], 201);
         return response()->json([
             'message' => 'Failed to create User!',
-        ],500);
+        ], 500);
     }
 
     /**
@@ -57,9 +62,11 @@ class UserController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        return response()->json([
+            new UserResource($user),
+        ], 200);
     }
 
     /**
@@ -100,10 +107,10 @@ class UserController extends Controller
         $result = $user->delete();
 
         if ($result) {
-            return response()->json('',204);
+            return response()->json('', 204);
         }
         return response()->json([
             'message' => 'Failed To Delete User',
-        ],500);
+        ], 500);
     }
 }
