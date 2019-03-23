@@ -45,7 +45,7 @@ class HelperController extends Controller
                 'message' => 'Successfully created helper!'
             ], 201);
         return response()->json([
-            'message' => 'Successfully created helper!',
+            'message' => 'Failed to create helper!',
         ]);
     }
 
@@ -78,9 +78,13 @@ class HelperController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Helper $helper)
     {
-        //
+        $helper->update($request->all());
+
+        return response()->json([
+            'message' => "Successfully Updated Helper"
+        ], 200);
     }
 
     /**
@@ -89,7 +93,7 @@ class HelperController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Helper $helper)
     {
         //
     }
