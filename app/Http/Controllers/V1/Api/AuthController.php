@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\V1\Api;
 
 use App\Http\Resources\UserResource;
-use App\Models\Customer;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -24,10 +24,10 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'email' => 'required|string|email|unique:customers',
+            'email' => 'required|string|email|unique:users',
             'password' => 'required|string|confirmed'
         ]);
-        $user = new Customer();
+        $user = new User();
         $user->fill($request->all());
         $user->save();
         return response()->json([

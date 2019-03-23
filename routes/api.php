@@ -14,9 +14,7 @@ use Illuminate\Http\Request;
 */
 //, 'middleware' => 'cors'
 Route::group(['namespace' => 'V1\Api'], function () {
-
-    Route::resource('helpers', 'HelperController');
-
+    Route::resource ('users', 'UserController');
     Route::group(['prefix' => 'auth', ], function () {
         Route::post('login', 'AuthController@login');
         Route::post('signup', 'AuthController@signup');
