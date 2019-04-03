@@ -46,11 +46,13 @@ class UserController extends Controller
     {
         $user = new User();
         $user->fill($request->all());
-        if ($user->save())
+        if ($user->save()) {
             return response()->json([
                 'info' => $user,
                 'message' => 'Successfully created User!',
             ], 201);
+        }
+
         return response()->json([
             'message' => 'Failed to create User!',
         ], 500);

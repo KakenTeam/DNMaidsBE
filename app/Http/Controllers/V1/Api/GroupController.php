@@ -40,7 +40,18 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $group = new Group();
+        $group->fill($request->all());
+        if ($group->save()) {
+            return response()->json([
+                'info' => $group,
+                'message' => 'Successfully Created Group!',
+            ], 201);
+        }
+
+        return response()->json([
+            'message' => 'Failed to create Group!',
+        ], 500);
     }
 
     /**
