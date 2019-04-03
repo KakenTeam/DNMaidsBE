@@ -43,4 +43,8 @@ class User extends Authenticatable
     {
         return $this->attributes['password'] = bcrypt($value);
     }
+
+    public function groups(){
+        return $this->belongsToMany(Group::class, 'group_user', 'user_id', 'group_id');
+    }
 }
