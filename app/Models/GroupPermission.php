@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class GroupUser extends Model
+class GroupPermission extends Model
 {
-    protected $table = 'group_user';
-    
+    protected $table = 'group_permission';
+
     protected $fillable = [
-        'user_id',
+        'permission_id',
         'group_id',
+        'is_allowed',
     ];
 }
