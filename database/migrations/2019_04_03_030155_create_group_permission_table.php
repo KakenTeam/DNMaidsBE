@@ -18,7 +18,6 @@ class CreateGroupPermissionTable extends Migration
             $table->unsignedInteger('group_id');
             $table->unsignedInteger('permission_id');
             $table->boolean('is_allowed')->default(1);
-            $table->timestamps();
         });
     }
 
