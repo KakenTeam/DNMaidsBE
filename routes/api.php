@@ -17,7 +17,7 @@ Route::get('test', function () {
 });
 Route::group(['namespace' => 'V1\Api'], function () {
     Route::resource ('users', 'UserController');
-    Route::resource ('groups', 'GroupController');
+
     Route::group(['prefix' => 'auth', ], function () {
         Route::post('login', 'AuthController@login');
         Route::post('signup', 'AuthController@signup');
@@ -25,8 +25,13 @@ Route::group(['namespace' => 'V1\Api'], function () {
 
 
         Route::group(['middleware' => 'auth:api'], function () {
+
             Route::get('logout', 'AuthController@logout');
             Route::get('user', 'AuthController@user');
+
+            Route::group(['middleware' => 'isadmin'], function () {
+                Route::resource ('groups', 'GroupController');
+            });
         });
     });
 });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\Api;
 
+use App\Http\Requests\StoreGroupRequest;
 use App\Models\Group;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -38,9 +39,20 @@ class GroupController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreGroupRequest $request)
     {
-        //
+        $group = new Group();
+        $group->fill($request->all());
+        if ($group->save()) {
+            return response()->json([
+                'info' => $group,
+                'message' => 'Successfully Created Group!',
+            ], 201);
+        }
+
+        return response()->json([
+            'message' => 'Failed to create Group!',
+        ], 500);
     }
 
     /**
