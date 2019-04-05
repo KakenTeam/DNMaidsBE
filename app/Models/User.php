@@ -30,15 +30,6 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'birthday' => 'date',
-    ];
-
     public function setPasswordAttribute($value)
     {
         return $this->attributes['password'] = bcrypt($value);

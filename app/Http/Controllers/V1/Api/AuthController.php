@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\Api;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Carbon\Carbon;
@@ -45,34 +46,31 @@ class AuthController extends Controller
      * @return [string] token_type
      * @return [string] expires_at
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
-
         $credentials = request(['email', 'password']);
         if(!Auth::attempt($credentials))
             return response()->json([
-                'message' => 'Unauthorized'
+                'message' => 'Login Failed!'
             ], 401);
 
         $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
-
         $token->save();
 
         return response()->json([
+            'message' => 'Login Successfully!',
             'info' => [
-                new UserResource($user),
+                'user' => new UserResource($user->with('groups.permissions')->first()),
             ],
-            'access_token' => $tokenResult->accessToken,
-            'token_type' => 'Bearer',
-            'expires_at' => Carbon::parse(
-                $tokenResult->token->expires_at
-            )->toDateTimeString()
+            'token' => [
+                'access_token' => $tokenResult->accessToken,
+                'token_type' => 'Bearer',
+                'expires_at' => Carbon::parse(
+                    $tokenResult->token->expires_at
+                )->toDateTimeString()
+            ],
         ]);
     }
 
@@ -97,6 +95,7 @@ class AuthController extends Controller
      */
     public function user(Request $request)
     {
-        return response()->json($request->user());
+        $user = new UserResource($request->user()->with('groups.permissions')->first());
+        return response()->json($user);
     }
 }
