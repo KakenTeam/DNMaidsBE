@@ -14,15 +14,23 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+        foreach ($this->groups as $group) {
+            foreach ($group->permissions as $permission) {
+                $per[] = [
+                    'group' => $group->group_name,
+                    'permission' => $permission->permission,
+                ];
+            }
+        }
         return [
             'id' => $this->id,
-            'role_id' => $this->role_id,
             'email' => $this->email,
             'name' => $this->name,
             'phone' => $this->phone,
             'address' => $this->address,
             'gender' => $this->gender,
             'birthday' => $this->birthday,
+            'permission' => $per,
         ];
     }
 }
