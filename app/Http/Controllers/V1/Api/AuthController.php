@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1\Api;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Carbon\Carbon;
@@ -21,18 +22,13 @@ class AuthController extends Controller
      * @param  [string] password_confirmation
      * @return [string] message
      */
-    public function signup(Request $request)
+    public function signup(StoreUserRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|confirmed'
-        ]);
         $user = new User();
         $user->fill($request->all());
         $user->save();
         return response()->json([
-            'message' => 'Successfully created user!'
+            'message' => 'Successfully Created user!'
         ], 201);
     }
 
