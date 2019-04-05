@@ -27,7 +27,7 @@ Route::group(['namespace' => 'V1\Api'], function () {
             Route::get('user', 'AuthController@user');
         });
     });
-    Route::group(['middleware' => 'auth:api'], function () {
+    Route::group(['namespace' => 'Admin', 'middleware' => 'auth:api'], function () {
         Route::group(['middleware' => 'isadmin'], function () {
             Route::resource('groups', 'GroupController');      //Groups Management API
             Route::resource('users', 'UserController');        //Users Management API

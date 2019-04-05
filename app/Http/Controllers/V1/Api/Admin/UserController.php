@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\V1\Api;
+namespace App\Http\Controllers\V1\Api\Admin;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
