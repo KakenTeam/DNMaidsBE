@@ -14,6 +14,7 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+        $per = null;
         foreach ($this->groups as $group) {
             foreach ($group->permissions as $permission) {
                 $per[] = [
