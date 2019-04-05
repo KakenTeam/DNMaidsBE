@@ -4,8 +4,6 @@
 /vendor
 .env
 .idea
-database/seeds/DatabaseSeeder.php
-
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
