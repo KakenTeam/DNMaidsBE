@@ -63,8 +63,9 @@ class UserController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Request $request, User $user)
     {
+        $this->authorize('view', $request->user(), $user);
         return response()->json([
             new UserResource($user),
         ], 200);
@@ -91,6 +92,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+        $this->authorize('update', $request->user(), $user);
         $user->update($request->all());
         return response()->json([
             'message' => "Successfully Updated User"
@@ -103,10 +105,10 @@ class UserController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
+        $this->authorize('delete', $request->user());
         $result = $user->delete();
-
         if ($result) {
             return response()->json('', 204);
         }
