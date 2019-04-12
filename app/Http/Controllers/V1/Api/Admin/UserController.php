@@ -16,8 +16,9 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $this->authorize('index', $request->user());
         $user = User::where('status', '1')->paginate(10);
 
         return response()->json([
@@ -43,6 +44,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+        $this->authorize('create', $request->user());
         $user = new User();
         $user->fill($request->all());
         if ($user->save()) {

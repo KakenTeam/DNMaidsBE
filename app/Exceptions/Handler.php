@@ -3,7 +3,10 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\CssSelector\Exception\InternalErrorException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -44,8 +47,25 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception)
+    public function render($request, Exception $e)
     {
-        return parent::render($request, $exception);
+        if ($e instanceof AuthorizationException)
+        {
+            return response()->json(['message' => 'Not Authorized.'],403);
+        }
+        if ($e instanceof NotFoundHttpException)
+        {
+            return response()->json(['message' => 'Not Found.'],404);
+        }
+        if ($e instanceof \ErrorException)
+        {
+            if($request->ajax() || $request->wantsJson())
+            {
+                return response()->json([
+                    'message' => 'Something went wrong on our side.',
+                ], 500);
+            }
+        }
+        return parent::render($request, $e);
     }
 }

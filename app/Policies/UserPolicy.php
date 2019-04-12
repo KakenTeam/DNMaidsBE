@@ -12,7 +12,7 @@ class UserPolicy
 
     public function before($user, $ability)
     {
-        if ($user->hasPermissions() == 'Admin') {
+        if (in_array('Admin', $user->hasPermissions())) {
             return true;
         }
     }
