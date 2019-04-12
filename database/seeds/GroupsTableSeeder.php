@@ -16,6 +16,10 @@ class GroupsTableSeeder extends Seeder
                 'group_name' => $group,
             ]);
         }
+        $per = \App\Models\Permission::all();
+        \App\Models\Group::all()->each(function ($group) use ($per) {
+            $group->permissions()->saveMany($per->random(1)->values());
+        });
 
     }
 }
