@@ -58,7 +58,7 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Login Successfully!',
             'info' => [
-                'user' => new UserResource($user->with('groups.permissions')->first()),
+                'user' => new UserResource($user),
             ],
             'token' => [
                 'access_token' => $tokenResult->accessToken,

@@ -21,6 +21,15 @@ class User extends Authenticatable
         'birthday', 'gender', 'address', 'phone'
     ];
 
+    public function hasPermissions() {
+        $per= [];
+        foreach ($this->groups as $group) {
+            foreach ($group->permissions as $permission) {
+                $per[] = $permission->permission;
+            }
+        }
+        return $per;
+    }
     /**
      * The attributes that should be hidden for arrays.
      *
