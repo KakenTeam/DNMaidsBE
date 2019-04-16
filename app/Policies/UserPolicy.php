@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\User;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
+use App\Enum\Permission;
 
 class UserPolicy
 {
@@ -12,7 +13,7 @@ class UserPolicy
 
     public function before($user, $ability)
     {
-        if (in_array('Admin', $user->hasPermissions())) {
+        if (in_array(Permission::$ADMIN, $user->hasPermissions())) {
             return true;
         }
     }
@@ -20,7 +21,7 @@ class UserPolicy
     public function index(User $user)
     {
         $permission = $user->hasPermissions();
-        if (in_array("list_user", $permission)) {
+        if (in_array(Permission::$LIST_USER, $permission)) {
             return true;
         }
         return false;
@@ -36,7 +37,7 @@ class UserPolicy
     public function view(User $user)
     {
         $permission = $user->hasPermissions();
-        if (in_array("view_user", $permission)) {
+        if (in_array(Permission::$VIEW_USER, $permission)) {
             return true;
         }
         return false;
@@ -51,7 +52,7 @@ class UserPolicy
     public function create(User $user)
     {
         $permission = $user->hasPermissions();
-        if (in_array("create_user", $permission)) {
+        if (in_array(Permission::$CREATE_USER, $permission)) {
             return true;
         }
         return false;
@@ -67,7 +68,7 @@ class UserPolicy
     public function update(User $user, User $model)
     {
         $permission = $user->hasPermissions();
-        if (in_array("update_user", $permission)) {
+        if (in_array(Permission::$UPDATE_USER, $permission)) {
             return true;
         }
         return false;
@@ -83,7 +84,7 @@ class UserPolicy
     public function delete(User $user, User $model)
     {
         $permission = $user->hasPermissions();
-        if (in_array("delete_user", $permission)) {
+        if (in_array(Permission::$DELETE_USER, $permission)) {
             return true;
         }
         return false;
