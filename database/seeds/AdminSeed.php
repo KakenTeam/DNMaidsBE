@@ -16,10 +16,17 @@ class AdminSeed extends Seeder
             'email' => 'admin@gmail.com',
             'password' => bcrypt('123456'),
         ]);
+
         $admin = \App\Models\User::whereEmail('admin@gmail.com')->first();
+
         \Illuminate\Support\Facades\DB::table('group_user')->insert([
             'user_id' => $admin->id,
             'group_id' => 1,
+        ]);
+
+        \Illuminate\Support\Facades\DB::table('group_permission')->insert([
+            'group_id' => 1,
+            'permission_id' =>1,
         ]);
     }
 }

@@ -16,11 +16,23 @@ class GroupPolicy
      *
      */
 
-    public function before($user, $ability)
+    public function before(User $user, $ability)
     {
         if (in_array(Permission::$ADMIN, $user->hasPermissions())) {
             return true;
         }
+    }
+
+    /**
+     * Determine whether the user can view the model list.
+     * */
+    public function index(User $user)
+    {
+        $permission = $user->hasPermissions();
+        if (in_array(Permission::$LIST_GROUP, $permission)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -32,7 +44,11 @@ class GroupPolicy
      */
     public function view(User $user, Group $group)
     {
-        //
+        $permission = $user->hasPermissions();
+        if (in_array(Permission::$VIEW_GROUP, $permission)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -43,7 +59,11 @@ class GroupPolicy
      */
     public function create(User $user)
     {
-        //
+        $permission = $user->hasPermissions();
+        if (in_array(Permission::$CREATE_GROUP, $permission)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -55,7 +75,11 @@ class GroupPolicy
      */
     public function update(User $user, Group $group)
     {
-        //
+        $permission = $user->hasPermissions();
+        if (in_array(Permission::$UPDATE_GROUP, $permission)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -67,7 +91,11 @@ class GroupPolicy
      */
     public function delete(User $user, Group $group)
     {
-        //
+        $permission = $user->hasPermissions();
+        if (in_array(Permission::$DELETE_GROUP, $permission)) {
+            return true;
+        }
+        return false;
     }
 
     /**
