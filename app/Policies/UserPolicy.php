@@ -10,7 +10,9 @@ use App\Enum\Permission;
 class UserPolicy
 {
     use HandlesAuthorization;
-
+    /*
+     * Admin can access all function
+     * */
     public function before($user, $ability)
     {
         if (in_array(Permission::$ADMIN, $user->hasPermissions())) {
