@@ -14,6 +14,8 @@ class GroupsTableSeeder extends Seeder
         foreach ($groups as $group) {
             \Illuminate\Support\Facades\DB::table('groups')->insert([
                 'group_name' => $group,
+                'created_at' => \Illuminate\Support\Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => \Illuminate\Support\Carbon::now()->format('Y-m-d H:i:s'),
             ]);
         }
         $per = \App\Models\Permission::all();

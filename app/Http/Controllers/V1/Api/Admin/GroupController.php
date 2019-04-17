@@ -15,8 +15,10 @@ class GroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+
+        $this->authorize('index', $request->user());
         $groups = Group::all();
 
         return response()->json(
@@ -42,6 +44,7 @@ class GroupController extends Controller
      */
     public function store(StoreGroupRequest $request)
     {
+        $this->authorize('create', $request->user());
         $group = new Group();
         $group->fill($request->all());
         if ($group->save()) {
@@ -62,8 +65,10 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Group $group)
+    public function show(Request $request, Group $group)
     {
+        $this->authorize('update', $request->user(), $group);
+
         return response()->json(
             $group,
             200
@@ -90,6 +95,7 @@ class GroupController extends Controller
      */
     public function update(Request $request, Group $group)
     {
+        $this->authorize('update', $request->user(), $group);
         $group->update($request->all());
 
         return response()->json([
@@ -103,8 +109,9 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Group $group)
+    public function destroy(Request $request, Group $group)
     {
+        $this->authorize('delete', $request->user(), $group);
         if ($group->delete()) {
             return response()->json([], 204);
         }

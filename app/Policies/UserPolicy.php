@@ -10,7 +10,7 @@ use App\Enum\Permission;
 class UserPolicy
 {
     use HandlesAuthorization;
-    /*
+    /**
      * Admin can access all function
      * */
     public function before($user, $ability)
@@ -20,6 +20,10 @@ class UserPolicy
         }
     }
 
+
+    /**
+     * Determine whether the user can view the model list.
+     * */
     public function index(User $user)
     {
         $permission = $user->hasPermissions();
