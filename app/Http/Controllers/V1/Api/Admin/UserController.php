@@ -47,7 +47,9 @@ class UserController extends Controller
         $this->authorize('create', $request->user());
         $user = new User();
         $user->fill($request->all());
+
         if ($user->save()) {
+            $user->groups()->attach($request->group);
             return response()->json([
                 'info' => $user,
                 'message' => 'Successfully created User!',
@@ -96,6 +98,8 @@ class UserController extends Controller
     {
         $this->authorize('update', $request->user(), $user);
         $user->update($request->all());
+        $user->groups()->sync($request->group);
+        
         return response()->json([
             'message' => "Successfully Updated User"
         ], 200);
