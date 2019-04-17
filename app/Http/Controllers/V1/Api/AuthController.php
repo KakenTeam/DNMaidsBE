@@ -81,7 +81,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Successfully logged out'
-        ]);
+        ],200);
     }
 
     /**
@@ -94,7 +94,7 @@ class AuthController extends Controller
         $user = new UserResource($request->user()->with('groups.permissions')->first());
         return response()->json([
             'message' => 'Successfully Get User Info!',
-            $user,
+            'info' => $user,
         ] ,200);
     }
 }

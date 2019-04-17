@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1\Api\Admin;
 
 use App\Http\Requests\StoreGroupRequest;
+use App\Http\Requests\UpdateGroupRequest;
 use App\Models\Group;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -93,7 +94,7 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Group $group)
+    public function update(UpdateGroupRequest $request, Group $group)
     {
         $this->authorize('update', $request->user(), $group);
         $group->update($request->all());
