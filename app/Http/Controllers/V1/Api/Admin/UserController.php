@@ -22,6 +22,7 @@ class UserController extends Controller
         $user = User::where('status', '1')->paginate(10);
 
         return response()->json([
+            'message' => 'Successfully get User list!',
             UserResource::collection($user),
         ], 200);
     }
@@ -51,8 +52,8 @@ class UserController extends Controller
         if ($user->save()) {
             $user->groups()->attach($request->group);
             return response()->json([
-                'info' => $user,
                 'message' => 'Successfully created User!',
+                'info' => $user,
             ], 201);
         }
 
@@ -71,6 +72,7 @@ class UserController extends Controller
     {
         $this->authorize('view', $request->user(), $user);
         return response()->json([
+            'message'=>'Successfully get User!',
             new UserResource($user),
         ], 200);
     }
@@ -99,7 +101,7 @@ class UserController extends Controller
         $this->authorize('update', $request->user(), $user);
         $user->update($request->all());
         $user->groups()->sync($request->group);
-        
+
         return response()->json([
             'message' => "Successfully Updated User"
         ], 200);
