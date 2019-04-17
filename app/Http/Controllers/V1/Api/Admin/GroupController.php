@@ -7,6 +7,7 @@ use App\Models\Group;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+
 class GroupController extends Controller
 {
     /**
@@ -87,9 +88,13 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Group $group)
     {
-        //
+        $group->update($request->all());
+
+        return response()->json([
+            'message' => "Successfully Updated Group!"
+        ], 200);
     }
 
     /**
@@ -98,8 +103,14 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Group $group)
     {
-        //
+        if ($group->delete()) {
+            return response()->json([], 204);
+        }
+        return response()->json([
+            'message' => "Failed to Update Group!"
+        ], 500);
+
     }
 }
