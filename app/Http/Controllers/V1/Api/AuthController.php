@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\Api;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Carbon\Carbon;
@@ -80,7 +81,7 @@ class AuthController extends Controller
         $request->user()->token()->revoke();
 
         return response()->json([
-            'message' => 'Successfully logged out'
+            'message' => 'Successfully Logged Out'
         ],200);
     }
 
@@ -91,10 +92,20 @@ class AuthController extends Controller
      */
     public function user(Request $request)
     {
-        $user = new UserResource($request->user()->with('groups.permissions')->first());
+        $user = new UserResource($request->user());
         return response()->json([
             'message' => 'Successfully Get User Info!',
             'info' => $user,
         ] ,200);
+    }
+
+    public function updateProfile(UpdateProfileRequest $request)
+    {
+        $user = $request->user();
+        $user->update($request->all());
+
+        return response()->json([
+            'message' => "Successfully Updated User",
+        ], 200);
     }
 }
