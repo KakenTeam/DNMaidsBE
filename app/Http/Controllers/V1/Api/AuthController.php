@@ -92,6 +92,9 @@ class AuthController extends Controller
     public function user(Request $request)
     {
         $user = new UserResource($request->user()->with('groups.permissions')->first());
-        return response()->json($user);
+        return response()->json([
+            'message' => 'Successfully Get User Info!',
+            $user,
+        ] ,200);
     }
 }
