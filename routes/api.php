@@ -31,7 +31,7 @@ Route::group(['namespace' => 'V1\Api'], function () {
         Route::group(['namespace' => 'Admin', 'middleware' => 'auth:api'], function () {
             Route::resource('groups', 'GroupController');                   //Groups Management API
             Route::resource('users', 'UserController');                     //Users Management API
-            Route::resource('rent_packages', 'RentPackageController');      //RentPackage Management API
+
     });
 });
 
