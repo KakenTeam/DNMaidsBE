@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\Api;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -11,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -107,5 +109,21 @@ class AuthController extends Controller
         return response()->json([
             'message' => "Successfully Updated User",
         ], 200);
+    }
+
+    public function updatePassword(UpdatePasswordRequest $request)
+    {
+        $user = $request->user();
+        if ( Hash::check ($request->old_password, $user->password)) {
+            $user->update($request->all());
+
+            return response()->json([
+                'message' => "Successfully Updated Password",
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => "Old Password Doesn't Match!",
+        ], 401 );
     }
 }
