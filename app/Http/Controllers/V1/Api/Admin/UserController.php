@@ -23,7 +23,7 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'Successfully get User list!',
-            UserResource::collection($user),
+            'info' => UserResource::collection($user),
         ], 200);
     }
 
@@ -53,7 +53,7 @@ class UserController extends Controller
             $user->groups()->attach($request->group);
             return response()->json([
                 'message' => 'Successfully created User!',
-                'info' => $user,
+                'info' => new UserResource($user) ,
             ], 201);
         }
 
@@ -73,7 +73,7 @@ class UserController extends Controller
         $this->authorize('view', $request->user(), $user);
         return response()->json([
             'message'=>'Successfully get User!',
-            new UserResource($user),
+            'info' => new UserResource($user),
         ], 200);
     }
 
