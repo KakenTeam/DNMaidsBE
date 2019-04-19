@@ -58,4 +58,17 @@ class User extends Authenticatable
     public function groups(){
         return $this->belongsToMany(Group::class, 'group_user', 'user_id', 'group_id');
     }
+
+    public function customersContracts(){
+        return $this->hasMany(Contract::class, 'customer_id','id' );
+    }
+
+    public function helpersContracts(){
+        return $this->hasMany(Contract::class,  'helper_id','id');
+    }
+
+    public function creatorsContracts(){
+        return $this->hasMany(Contract::class, 'contract_creator_id', 'id' );
+    }
+
 }
