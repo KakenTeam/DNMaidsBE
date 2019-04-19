@@ -24,6 +24,10 @@ class PermissionTableSeeder extends Seeder
             Permission::$DELETE_GROUP,
             Permission::$LIST_GROUP,
             Permission::$VIEW_GROUP,
+
+            Permission::$LIST_CONTRACT,
+            Permission::$VIEW_CONTRACT,
+            Permission::$UPDATE_CONTRACT,
             ];
         foreach ($per as $p) {
             \Illuminate\Support\Facades\DB::table('permissions')->insert([

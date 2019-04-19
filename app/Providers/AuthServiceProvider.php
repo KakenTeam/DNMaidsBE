@@ -2,12 +2,13 @@
 
 namespace App\Providers;
 
-use App\Enum\Permission;
+
+use App\Models\Contract;
 use App\Models\Group;
 use App\Models\User;
+use App\Policies\ContractPolicy;
 use App\Policies\GroupPolicy;
 use App\Policies\UserPolicy;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
 
@@ -21,6 +22,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         User::class => UserPolicy::class,
         Group::class => GroupPolicy::class,
+        Contract::class => ContractPolicy::class,
     ];
 
     /**
