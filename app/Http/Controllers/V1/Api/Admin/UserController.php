@@ -19,12 +19,46 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $this->authorize('index', $request->user());
-        $user = User::where('status', '1')->paginate(10);
 
-        return response()->json([
-            'message' => 'Successfully get User list!',
-            UserResource::collection($user),
-        ], 200);
+        $user = new User();
+        $fillable = $user->getFillable();
+
+        if ($request->field  != null &&!in_array($request->field, $fillable)){
+            return response()->json([
+                'success' => 'false',
+                'message' => 'Field name is NOT correct!',
+            ], 400);
+        }
+        if ($request->page != null) {
+            if ($request->field == null) {
+                $user = User::where('status', '1')->paginate(10);
+            } else {
+                $user = User::where('status', '1')->where($request->field, 'like', '%'.$request->search.'%')->paginate(10);
+            }
+
+            $user->appends(['field'=>$request->field, 'search' => $request->search]);
+
+            return response()->json([
+                'success' => 'true',
+                'info' =>$user,
+            ], 200);
+        } else {
+            if ($request->field == null) {
+                $user = User::where('status', '1')->get();
+            } else {
+                $user = User::where('status', '1')->where($request->field, 'like', '%'.$request->search.'%')->get();
+            }
+
+            $count = $user->count();
+            return response()->json([
+                'success' => 'true',
+                'data' => [
+                    'users' =>UserResource::collection($user),
+                    'total' => $count,
+                ],
+            ], 200);
+        }
+
     }
 
     /**
@@ -36,6 +70,7 @@ class UserController extends Controller
     {
         //
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -53,7 +88,7 @@ class UserController extends Controller
             $user->groups()->attach($request->group);
             return response()->json([
                 'message' => 'Successfully created User!',
-                'info' => $user,
+                'info' => new UserResource($user),
             ], 201);
         }
 
@@ -72,8 +107,8 @@ class UserController extends Controller
     {
         $this->authorize('view', $request->user(), $user);
         return response()->json([
-            'message'=>'Successfully get User!',
-            new UserResource($user),
+            'message' => 'Successfully get User!',
+            'info' => new UserResource($user),
         ], 200);
     }
 
