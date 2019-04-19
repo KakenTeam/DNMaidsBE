@@ -20,5 +20,9 @@ class Permission {
     public static $UPDATE_GROUP = "update_group";
     public static $DELETE_GROUP = "delete_group";
 
+    //Contract
+    public static $LIST_CONTRACT = "list_contract";
+    public static $VIEW_CONTRACT = "view_contract";
+    public static $UPDATE_CONTRACT = "update_contract";
 
 }

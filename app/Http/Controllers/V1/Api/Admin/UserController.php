@@ -6,6 +6,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -18,45 +19,48 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('index', $request->user());
 
-        $user = new User();
-        $fillable = $user->getFillable();
-
-        if ($request->field  != null &&!in_array($request->field, $fillable)){
-            return response()->json([
-                'success' => 'false',
-                'message' => 'Field name is NOT correct!',
-            ], 400);
-        }
-        if ($request->page != null) {
-            if ($request->field == null) {
-                $user = User::where('status', '1')->paginate(10);
-            } else {
-                $user = User::where('status', '1')->where($request->field, 'like', '%'.$request->search.'%')->paginate(10);
+        try {
+            $user = new User();
+            $this->authorize('index', $user);
+            $fillable = $user->getFillable();
+            if ($request->field != null && !in_array($request->field, $fillable)) {
+                return response()->json([
+                    'success' => 'false',
+                    'message' => 'Field name is NOT correct!',
+                ], 400);
             }
+            if ($request->page != null) {
+                if ($request->field == null) {
+                    $user = User::where('status', '1')->paginate(10);
+                } else {
+                    $user = User::where('status', '1')->where($request->field, 'like', '%' . $request->search . '%')->paginate(10);
+                }
 
-            $user->appends(['field'=>$request->field, 'search' => $request->search]);
+                $user->appends(['field' => $request->field, 'search' => $request->search]);
 
-            return response()->json([
-                'success' => 'true',
-                'info' =>$user,
-            ], 200);
-        } else {
-            if ($request->field == null) {
-                $user = User::where('status', '1')->get();
+                return response()->json([
+                    'success' => 'true',
+                    'info' => $user,
+                ], 200);
             } else {
-                $user = User::where('status', '1')->where($request->field, 'like', '%'.$request->search.'%')->get();
-            }
+                if ($request->field == null) {
+                    $user = User::where('status', '1')->get();
+                } else {
+                    $user = User::where('status', '1')->where($request->field, 'like', '%' . $request->search . '%')->get();
+                }
 
-            $count = $user->count();
-            return response()->json([
-                'success' => 'true',
-                'data' => [
-                    'users' =>UserResource::collection($user),
-                    'total' => $count,
-                ],
-            ], 200);
+                $count = $user->count();
+                return response()->json([
+                    'success' => 'true',
+                    'data' => [
+                        'users' => UserResource::collection($user),
+                        'total' => $count,
+                    ],
+                ], 200);
+            }
+        } catch (AuthorizationException $e) {
+            return response()->json(['message' => 'This Action is Unauthorized',], 403);
         }
 
     }
@@ -80,21 +84,27 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $this->authorize('create', $request->user());
-        $user = new User();
-        $user->fill($request->all());
+        try {
+            $user = new User();
+            $this->authorize('create', $user);
 
-        if ($user->save()) {
-            $user->groups()->attach($request->group);
+            $user->fill($request->all());
+
+            if ($user->save()) {
+                $user->groups()->attach($request->group);
+                return response()->json([
+                    'message' => 'Successfully created User!',
+                    'info' => new UserResource($user),
+                ], 201);
+            }
+
             return response()->json([
-                'message' => 'Successfully created User!',
-                'info' => new UserResource($user),
-            ], 201);
+                'message' => 'Failed to create User!',
+            ], 500);
+        } catch (AuthorizationException $e) {
+            return response()->json(['message' => 'This Action is Unauthorized',], 403);
         }
 
-        return response()->json([
-            'message' => 'Failed to create User!',
-        ], 500);
     }
 
     /**
@@ -105,11 +115,15 @@ class UserController extends Controller
      */
     public function show(Request $request, User $user)
     {
-        $this->authorize('view', $request->user(), $user);
-        return response()->json([
-            'message' => 'Successfully get User!',
-            'info' => new UserResource($user),
-        ], 200);
+        try {
+            $this->authorize('view', $user);
+            return response()->json([
+                'message' => 'Successfully get User!',
+                'info' => new UserResource($user),
+            ], 200);
+        } catch (AuthorizationException $e) {
+            return response()->json(['message' => 'This Action is Unauthorized',], 403);
+        }
     }
 
     /**
@@ -133,13 +147,19 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $this->authorize('update', $request->user(), $user);
-        $user->update($request->all());
-        $user->groups()->sync($request->group);
+        try {
+            $this->authorize('update', $user);
+            $user->update($request->all());
+            $user->groups()->sync($request->group);
 
-        return response()->json([
-            'message' => "Successfully Updated User"
-        ], 200);
+            return response()->json([
+                'message' => "Successfully Updated User"
+            ], 200);
+        } catch (AuthorizationException $e) {
+            return response()->json(['message' => 'This Action is Unauthorized',], 403);
+        }
+
+
     }
 
     /**
@@ -150,13 +170,18 @@ class UserController extends Controller
      */
     public function destroy(Request $request, User $user)
     {
-        $this->authorize('delete', $request->user());
-        $result = $user->delete();
-        if ($result) {
-            return response()->json('', 204);
+        try {
+            $this->authorize('delete', $user);
+            $result = $user->delete();
+            if ($result) {
+                return response()->json('', 204);
+            }
+            return response()->json([
+                'message' => 'Failed To Delete User',
+            ], 500);
+        } catch (AuthorizationException $e) {
+            return response()->json(['message' => 'This Action is Unauthorized',], 403);
         }
-        return response()->json([
-            'message' => 'Failed To Delete User',
-        ], 500);
+
     }
 }
