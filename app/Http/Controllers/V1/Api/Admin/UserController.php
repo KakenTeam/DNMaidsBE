@@ -19,12 +19,25 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $this->authorize('index', $request->user());
-        $user = User::where('status', '1')->paginate(10);
+        if ($request->page != null) {
+            $user = User::where('status', '1')->paginate(10);
 
-        return response()->json([
-            'message' => 'Successfully get User list!',
-            'info' => UserResource::collection($user),
-        ], 200);
+            return response()->json([
+                'success' => 'true',
+                'info' =>$user,
+            ], 200);
+        } else {
+            $user = User::where('status', '1')->get();
+            $count = $user->count();
+            return response()->json([
+                'success' => 'true',
+                'data' => [
+                    'users' =>UserResource::collection($user),
+                    'total' => $count,
+                ],
+            ], 200);
+        }
+
     }
 
     /**
@@ -36,6 +49,7 @@ class UserController extends Controller
     {
         //
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -53,7 +67,7 @@ class UserController extends Controller
             $user->groups()->attach($request->group);
             return response()->json([
                 'message' => 'Successfully created User!',
-                'info' => new UserResource($user) ,
+                'info' => new UserResource($user),
             ], 201);
         }
 
@@ -72,7 +86,7 @@ class UserController extends Controller
     {
         $this->authorize('view', $request->user(), $user);
         return response()->json([
-            'message'=>'Successfully get User!',
+            'message' => 'Successfully get User!',
             'info' => new UserResource($user),
         ], 200);
     }
