@@ -14,7 +14,7 @@ class ContractController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         try {
             $this->authorize('index', new Contract());
@@ -50,7 +50,7 @@ class ContractController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, Contract $contract)
+    public function show(Contract $contract)
     {
         try {
             $this->authorize('view', $contract);
