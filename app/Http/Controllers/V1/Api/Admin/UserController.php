@@ -113,7 +113,7 @@ class UserController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, User $user)
+    public function show(User $user)
     {
         try {
             $this->authorize('view', $user);
@@ -168,7 +168,7 @@ class UserController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, User $user)
+    public function destroy(User $user)
     {
         try {
             $this->authorize('delete', $user);

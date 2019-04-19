@@ -17,7 +17,7 @@ class GroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         try {
             $this->authorize('index', new Group());
@@ -79,7 +79,7 @@ class GroupController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, Group $group)
+    public function show(Group $group)
     {
         try {
             $this->authorize('view', $group);
@@ -137,7 +137,7 @@ class GroupController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Group $group)
+    public function destroy(Group $group)
     {
         try {
             $this->authorize('delete', $group);
