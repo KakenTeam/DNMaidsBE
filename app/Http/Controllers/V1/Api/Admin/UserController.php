@@ -19,15 +19,26 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $this->authorize('index', $request->user());
+
+        $user = new User();
+        $fillable = $user->getFillable();
+
+        if (!in_array($request->field, $fillable)){
+            return response()->json([
+                'success' => 'false',
+                'message' => 'Field name is NOT correct!',
+            ], 400);
+        }
         if ($request->page != null) {
-            $user = User::where('status', '1')->paginate(10);
+            $user = User::where('status', '1')->where($request->field, 'like', '%'.$request->search.'%')->paginate(10);
+            $user->appends(['field'=>$request->field, 'search' => $request->search]);
 
             return response()->json([
                 'success' => 'true',
                 'info' =>$user,
             ], 200);
         } else {
-            $user = User::where('status', '1')->get();
+            $user = User::where('status', '1')->where($request->field, 'like', '%'.$request->search.'%')->get();
             $count = $user->count();
             return response()->json([
                 'success' => 'true',

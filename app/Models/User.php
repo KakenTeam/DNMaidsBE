@@ -27,6 +27,11 @@ class User extends Authenticatable
         'phone',
     ];
 
+    public function getFillable()
+    {
+        return $this->fillable;
+    }
+
     public function hasPermissions() {
         $per= [];
         foreach ($this->groups as $group) {
