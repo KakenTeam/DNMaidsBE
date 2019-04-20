@@ -104,7 +104,7 @@ class AuthController extends Controller
     public function updateProfile(UpdateProfileRequest $request)
     {
         $user = $request->user();
-        $user->update($request->all());
+        $user->update($request->except('password'));
 
         return response()->json([
             'message' => "Successfully Updated User",
@@ -115,7 +115,9 @@ class AuthController extends Controller
     {
         $user = $request->user();
         if ( Hash::check ($request->old_password, $user->password)) {
-            $user->update($request->all());
+            $user->update([
+                'password' => $request->password,
+            ]);
 
             return response()->json([
                 'message' => "Successfully Updated Password",
