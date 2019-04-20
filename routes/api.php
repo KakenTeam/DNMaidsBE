@@ -24,7 +24,7 @@ Route::group(['namespace' => 'V1\Api'], function () {
             Route::get('logout', 'AuthController@logout');
             Route::get('user', 'AuthController@user');
             Route::patch('profile', 'AuthController@updateProfile');
-            Route::post('password', 'AuthController@updatePassword');
+            Route::put('password', 'AuthController@updatePassword');
 
 
         });
