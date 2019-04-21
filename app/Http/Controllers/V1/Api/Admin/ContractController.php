@@ -18,7 +18,9 @@ class ContractController extends Controller
     {
         try {
             $this->authorize('index', new Contract());
-            $contracts = Contract::with(['customer', 'helper', 'creator'])->orderBy('status')->get();
+            $contracts = Contract::with(['customer', 'helper', 'creator'])
+                ->orderBy('status')
+                ->get();
 
             return response()->json([
                 'success' => 'true',

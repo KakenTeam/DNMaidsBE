@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1\Api\Client;
 
 use App\Http\Requests\StoreContractRequest;
+use App\Http\Resources\ContractResource;
 use App\Models\Contract;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -15,9 +16,18 @@ class ContractController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $user = $request->user();
+        $contract = Contract::with('helper')
+            ->where('customer_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'message' => 'Successfully Get Contracts',
+            'info' => ContractResource::collection($contract),
+        ]);
     }
 
     /**
