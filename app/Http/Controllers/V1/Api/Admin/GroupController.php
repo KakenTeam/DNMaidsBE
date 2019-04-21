@@ -17,15 +17,20 @@ class GroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             $this->authorize('index', new Group());
-            $groups = Group::all();
 
+            if ($request->page != null) {
+                $groups = Group::with('permissions')->where('group_name', 'like', '%'.$request->search.'%')->orderBy('group_name', 'asc')->paginate(10);
+            } else {
+                $groups = Group::with('permissions')->where('group_name', 'like', '%'.$request->search.'%')->orderBy('group_name', 'asc')->get();
+            }
             return response()->json(
                 $groups,
                 200);
+
         } catch (AuthorizationException $e) {
             return response()->json([
                 'message' => 'This Action is Unauthorized',
@@ -55,8 +60,16 @@ class GroupController extends Controller
         try {
             $group = new Group();
             $this->authorize('create', $group);
-            $group->fill($request->all());
+            $group->fill([
+                'group_name' => $request->group_name,
+            ]);
             if ($group->save()) {
+                if ($request->permissions) {
+                    $group->permissions()->attach($request->permissions);
+                }
+                if ($request->users) {
+                    $group->users()->attach($request->users);
+                }
                 return response()->json([
                     'info' => $group,
                     'message' => 'Successfully Created Group!',
@@ -118,8 +131,15 @@ class GroupController extends Controller
     {
         try {
             $this->authorize('update', $group);
-            $group->update($request->all());
-
+            $group->update([
+                'group_name' => $request->group_name,
+            ]);
+            if ($request->permissions) {
+                $group->permissions()->sync($request->permissions);
+            }
+            if ($request->users) {
+                $group->users()->sync($request->users);
+            }
             return response()->json([
                 'message' => "Successfully Updated Group!"
             ], 200);
@@ -141,7 +161,10 @@ class GroupController extends Controller
     {
         try {
             $this->authorize('delete', $group);
+
             if ($group->delete()) {
+                $group->permissions()->detach();
+                $group->users()->detach();
                 return response()->json([], 204);
             }
             return response()->json([
