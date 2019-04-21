@@ -132,7 +132,7 @@ class AuthController extends Controller
         ]);
 
         return response()->json([
-            'message' => "OK!",
+            'message' => "Successfully Updated Password!",
         ], 200);
     }
 }
