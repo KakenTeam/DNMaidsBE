@@ -4,15 +4,17 @@ namespace App\Http\Controllers\V1\Api;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdatePasswordRequest;
+
 use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Carbon\Carbon;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -48,7 +50,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         $credentials = request(['email', 'password']);
-        if(!Auth::attempt($credentials))
+        if (!Auth::attempt($credentials))
             return response()->json([
                 'message' => 'Login Failed!'
             ], 401);
@@ -84,7 +86,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Successfully Logged Out'
-        ],200);
+        ], 200);
     }
 
     /**
@@ -98,7 +100,7 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Successfully Get User Info!',
             'info' => $user,
-        ] ,200);
+        ], 200);
     }
 
     public function updateProfile(UpdateProfileRequest $request)
@@ -111,21 +113,26 @@ class AuthController extends Controller
         ], 200);
     }
 
-    public function updatePassword(UpdatePasswordRequest $request)
+    public function updatePassword(Request $request)
     {
-        $user = $request->user();
-        if ( Hash::check ($request->old_password, $user->password)) {
-            $user->update([
-                'password' => $request->password,
-            ]);
-
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required | min: 6| old_password:' . $request->user()->password,
+            'password' => 'required | min:6',
+            'password_confirmation' => 'required | same:password',
+        ]);
+        if ($validator->fails()) {
             return response()->json([
-                'message' => "Successfully Updated Password",
-            ], 200);
+               'message' => 'The given data was invalid.',
+               'errors' => $validator->errors(),
+            ], 422);
         }
+        $user = $request->user();
+        $user->update([
+            'password' => $request->password,
+        ]);
 
         return response()->json([
-            'message' => "Old Password Doesn't Match!",
-        ], 401 );
+            'message' => "OK!",
+        ], 200);
     }
 }
