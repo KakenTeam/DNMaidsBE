@@ -174,6 +174,7 @@ class UserController extends Controller
             $this->authorize('delete', $user);
             $result = $user->delete();
             if ($result) {
+                $user->groups()->detach();
                 return response()->json('', 204);
             }
             return response()->json([
