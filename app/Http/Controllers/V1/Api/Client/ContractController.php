@@ -50,6 +50,7 @@ class ContractController extends Controller
     {
         $contract = new Contract();
         $contract->fill($request->all());
+        $contract->customer_id = $request->user()->id;
         //Fee Formula  HERE
 
             $contract->fee = '200000';
