@@ -23,12 +23,19 @@ class ContractController extends Controller
         $contract = Contract::with(['helper', 'schedule'])
             ->where('customer_id', $user->id)
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10);
 
         return response()->json([
             'success' => 'true',
             'message' => 'Successfully Get Contracts',
-            'info' => ContractResource::collection($contract),
+            'info' => [
+                'total' => $contract->total(),
+                'last_item' => $contract->lastItem(),
+                'per_page' => $contract->perPage(),
+                'previous_url' => $contract->previousPageUrl(),
+                'next_url' => $contract->nextPageUrl(),
+                'data' => ContractResource::collection($contract),
+                ]
         ], 200);
     }
 
