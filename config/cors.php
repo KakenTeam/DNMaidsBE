@@ -12,7 +12,7 @@ return [
     |
     */
    
-    'supportsCredentials' => false,
+    'supportsCredentials' => true,
     'allowedOrigins' => ['*'],
     'allowedOriginsPatterns' => [],
     'allowedHeaders' => ["Content-Type", "X-Auth-Token", "Origin", "Authorization"],
