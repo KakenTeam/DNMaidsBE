@@ -18,6 +18,10 @@ class Contract extends Model
         'service_type'
     ];
 
+    public function schedule(){
+        return $this->hasMany(ContractSchedule::class,  'contract_id' ,'id');
+    }
+
     public function customer(){
         return $this->belongsTo(User::class,  'customer_id' ,'id');
     }
