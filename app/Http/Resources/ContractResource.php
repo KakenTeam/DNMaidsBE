@@ -15,6 +15,10 @@ class ContractResource extends JsonResource
      */
     public function toArray($request)
     {
+        $dow = [];
+        foreach ($this->schedule as $day) {
+            $dow[] = $day->day_of_week;
+        }
         return [
             'id' => $this->id,
             'address' => $this->address,
@@ -25,7 +29,10 @@ class ContractResource extends JsonResource
             'status' => $this->status,
             'created_at' => $this->created_at,
             'helper' => new HelperResource($this->helper),
-            'schedule' => ContractScheduleResource::collection($this->schedule)
+            'schedule' => [
+                'day_of_week' => $dow,
+                'time' => ContractScheduleResource::collection($this->schedule)
+                ]
         ];
     }
 }
