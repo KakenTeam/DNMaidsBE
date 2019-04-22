@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ContractResource extends JsonResource
@@ -24,6 +25,7 @@ class ContractResource extends JsonResource
             'status' => $this->status,
             'created_at' => $this->created_at,
             'helper' => new HelperResource($this->helper),
+            'schedule' => ContractScheduleResource::collection($this->schedule)
         ];
     }
 }

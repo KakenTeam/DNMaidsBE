@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1\Api\Client;
 use App\Http\Requests\StoreContractRequest;
 use App\Http\Resources\ContractResource;
 use App\Models\Contract;
+use App\Models\ContractSchedule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -25,9 +26,10 @@ class ContractController extends Controller
             ->get();
 
         return response()->json([
+            'success' => 'true',
             'message' => 'Successfully Get Contracts',
             'info' => ContractResource::collection($contract),
-        ]);
+        ], 200);
     }
 
     /**
@@ -49,6 +51,8 @@ class ContractController extends Controller
     public function store(StoreContractRequest $request)
     {
         $contract = new Contract();
+
+
         $contract->fill($request->all());
         $contract->customer_id = $request->user()->id;
         //Fee Formula  HERE
@@ -57,7 +61,15 @@ class ContractController extends Controller
 
 
         //End Fee Formula
+
+
+
         if ($contract->save()) {
+            foreach ($request->schedule as $item){
+                $schedule = new ContractSchedule();
+                $schedule->fill($item);
+                $contract->schedule()->save($schedule);
+            }
             return response()->json([
                 'success' => 'true',
                 'message' => 'Successfully Created Contract',
