@@ -24,9 +24,6 @@ class StoreContractRequest extends FormRequest
     public function rules()
     {
         return [
-            'customer_id' => 'required',
-            'helper_id' => 'required',
-            'contract_creator_id' => 'required',
             'address' => 'required',
             'start_date' => 'required | date_format:Y-m-d',
             'end_date' => 'required | date_format:Y-m-d',
