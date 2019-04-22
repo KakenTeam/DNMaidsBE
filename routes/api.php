@@ -14,7 +14,9 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['namespace' => 'V1\Api'], function () {
-
+    Route::get('test', function () {
+       return response()->json(\App\Models\Contract::with('schedule')->get());
+    });
     //Authenticate API
     Route::group(['prefix' => 'auth',], function () {
         Route::post('login', 'AuthController@login');

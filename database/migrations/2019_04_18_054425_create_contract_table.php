@@ -17,7 +17,7 @@ class CreateContractTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('customer_id');
             $table->unsignedInteger('helper_id')->nullable();
-            $table->unsignedInteger('contract_creator_id')->nullable();
+            $table->unsignedInteger('last_editor_id')->nullable();
             $table->string('address');
             $table->date('start_date');
             $table->date('end_date');

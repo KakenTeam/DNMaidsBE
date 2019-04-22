@@ -19,7 +19,7 @@ class ContractController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $contract = Contract::with('helper')
+        $contract = Contract::with(['helper', 'schedule'])
             ->where('customer_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->get();
