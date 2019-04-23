@@ -21,7 +21,7 @@ class CreateContractTable extends Migration
             $table->string('address');
             $table->date('start_date');
             $table->date('end_date');
-            $table->tinyInteger('status')->default(0);                   //0:chưa giải quyết , 1:đang giải quyết, 2: đã giải quyết
+            $table->String('status')->default('unverified');
             $table->integer('fee');
             $table->tinyInteger('service_type')->default(1);                //0: định kỳ, 1:lẻ
             $table->timestamps();

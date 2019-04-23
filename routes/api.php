@@ -36,8 +36,12 @@ Route::group(['namespace' => 'V1\Api'], function () {
     Route::group(['namespace' => 'Admin', 'middleware' => 'auth:api'], function () {
         Route::resource('groups', 'GroupController');                   //Groups Management API
         Route::resource('users', 'UserController');                     //Users Management API
+
         Route::resource('contracts', 'ContractController');
+        Route::patch('contracts/{id}/status', 'ContractController@updateStatus' );
+
         Route::resource('helpers', 'HelperController');
+
     });
 });
 
