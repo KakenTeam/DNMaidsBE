@@ -11,7 +11,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\User::class, 10)->create();
+        factory(\App\Models\User::class, 20)->create();
         $groups = \App\Models\Group::all();
         \App\Models\User::all()->each(function ($user) use ($groups) {
             $user->groups()->saveMany($groups->random(1)->values());

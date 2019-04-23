@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AdminSeed::class);
         $this->call(ContractSeeder::class);
         $this->call(FeeIndexSeeder::class);
+        $this->call(HelperSeeder::class);
     }
 }

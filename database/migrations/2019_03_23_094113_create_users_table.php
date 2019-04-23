@@ -21,9 +21,10 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('address')->nullable();
             $table->text('image')->nullable();
-            $table->tinyInteger('gender')->default(0);      //0:nu 1:nam
+            $table->tinyInteger('gender')->default(0);    //0:nu 1:nam
             $table->date('birthday')->nullable();
-            $table->tinyInteger('status')->default(1);                        //0: disable, 1:active
+            $table->tinyInteger('status')->default(1);    //0: disable, 1:active
+            $table->tinyInteger('role')->default(2);                        //0:admin, 1:helper, 2:customer
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
