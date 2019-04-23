@@ -14,10 +14,6 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['namespace' => 'V1\Api'], function () {
-    Route::get('test', function () {
-        $user = \App\Models\User::where('role','1')->find(30);
-        return response()->json($user);
-    });
     Route::get('feecalculator', 'Admin\FeeController@fee');
     //Authenticate API
     Route::group(['prefix' => 'auth',], function () {
