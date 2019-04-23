@@ -37,6 +37,7 @@ Route::group(['namespace' => 'V1\Api'], function () {
         Route::resource('groups', 'GroupController');                   //Groups Management API
         Route::resource('users', 'UserController');                     //Users Management API
         Route::resource('contracts', 'ContractController');
+        Route::resource('helpers', 'HelperController');
     });
 });
 
