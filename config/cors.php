@@ -15,7 +15,7 @@ return [
     'supportsCredentials' => true,
     'allowedOrigins' => ['*'],
     'allowedOriginsPatterns' => [],
-    'allowedHeaders' => ["Content-Type", "X-Auth-Token", "Origin", "Authorization"],
+    'allowedHeaders' => ["Content-Type", "X-Auth-Token", "Origin", "Authorization", "X-Requested-With"],
     'allowedMethods' => ['*'],
     'exposedHeaders' => [],
     'maxAge' => 0,
