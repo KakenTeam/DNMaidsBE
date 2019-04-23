@@ -6,6 +6,7 @@ use App\Models\Contract;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class ContractController extends Controller
 {
@@ -109,6 +110,15 @@ class ContractController extends Controller
     {
         try {
             $this->authorize('update', $contract);
+            $validator = Validator::make($request->all(), [
+                'helper' => 'helper',
+            ]);
+            if ($validator->fails()){
+                return response()->json([
+                    'message' => 'The given data was invalid.',
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
             $contract->update($request->all());
 
             return response()->json([
