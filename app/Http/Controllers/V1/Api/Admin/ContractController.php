@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\V1\Api\Admin;
 
+use App\Http\Requests\UpdateContractRequest;
 use App\Models\Contract;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class ContractController extends Controller
 {
@@ -105,7 +107,7 @@ class ContractController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Contract $contract)
+    public function update(UpdateContractRequest $request, Contract $contract)
     {
         try {
             $this->authorize('update', $contract);

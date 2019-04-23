@@ -116,6 +116,7 @@ return [
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
     'old_password' => 'The Password doesn\'t match',
+    'helper' => 'The :attribute is not an ID of a helper',
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
