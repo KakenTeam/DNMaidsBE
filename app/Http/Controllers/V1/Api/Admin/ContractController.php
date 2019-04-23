@@ -68,7 +68,35 @@ class ContractController extends Controller
 
     }
 
+    /**
+     * Update status specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  Contract $contract
+     * @return \Illuminate\Http\Response
+     */
+    public function updateStatus(Request $request, Contract $contract)
+    {
+        try {
+            $this->authorize('update', $contract);
+            $request->validate([
+               'status' => 'required | string',
+            ]);
+            $contract->update([
+                'status' => $request->status,
+            ]);
 
+            return response()->json([
+                'success' => 'true',
+                'message' => 'Successfully Updated Contract Status',
+            ], 200);
+        } catch (AuthorizationException $e) {
+            return response()->json([
+                'message' => 'This Action is Unauthorized',
+            ], 403);
+        }
+
+    }
 
     /**
      * Update the specified resource in storage.
