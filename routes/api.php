@@ -39,10 +39,12 @@ Route::group(['namespace' => 'V1\Api'], function () {
         Route::resource('groups', 'GroupController');                   //Groups Management API
         Route::resource('users', 'UserController');                     //Users Management API
 
+        //Contracts Management API
         Route::resource('contracts', 'ContractController');
         Route::patch('contracts/{id}/status', 'ContractController@updateStatus' );
 
-        Route::resource('helpers', 'HelperController');
+        Route::resource('helpers', 'HelperController');                 //Helpers Mananement API
+        Route::resource('feedbacks', 'FeedbackController');             //Feedbacks Mananement API
 
     });
 });
