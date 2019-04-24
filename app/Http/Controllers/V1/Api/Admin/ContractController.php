@@ -6,6 +6,7 @@ use App\Http\Requests\UpdateContractRequest;
 use App\Models\Contract;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -83,7 +84,7 @@ class ContractController extends Controller
         try {
             $this->authorize('update', $contract);
             $request->validate([
-               'status' => 'required | string',
+                'status' => 'required | string',
             ]);
             $contract->update([
                 'status' => $request->status,
@@ -126,14 +127,49 @@ class ContractController extends Controller
 
     }
 
-    public function findHelper(Contract $contract){
-        $start_time = $contract->start_time;
-        $end_time = $contract->end_time;
-        
-        $result = User::with(['helpersContracts.schedule'])->where('role', 1)->orderBy('id')->get();
+    public function findHelper(Contract $contract)
+    {
+        $start_date = $contract->start_date;
+        $end_date = $contract->end_date;
+
+        $schedule_list = $contract->with('schedule')
+            ->get();
+        $result = User::with(['helpersContracts.schedule'])
+            ->where('role', 1)
+            ->orderBy('id')
+            ->get();
+        $check = false;
+
+        $available = [];
+
+        foreach ($result as $user) {
+            $check = false;
+            foreach ($user->helpersContracts as $c) {
+                if ($c->start_date > $end_date
+                    || $c->end_date < $start_date) {
+                    continue;
+                } else foreach ($contract->schedule as $item) {
+                    foreach ($c->schedule as $schedule) {
+                        if ($schedule->day_of_week == $item->day_of_week
+                            && $schedule->shift == $item->shift) {
+                            $check = true;
+                            break;
+                        }
+                    }
+                    if ($check) {
+                        break;
+                    }
+                }
+            }
+            if (!$check) {
+                $available[] = $user;
+            }
+        }
 
         return response()->json([
-            $result
+            'total' =>count($available),
+            'data' => $available,
+
         ]);
     }
 }
