@@ -11,6 +11,7 @@ class ContractSchedule extends Model
         'end_time',
         'day_of_week',
         'contract_id',
+        'shift',
     ];
 
     public function schedule()

@@ -27,6 +27,7 @@ class StoreContractRequest extends FormRequest
             'address' => 'required',
             'start_date' => 'required | date_format:Y-m-d',
             'end_date' => 'required | date_format:Y-m-d',
+            'shift' => 'required',
         ];
     }
 }

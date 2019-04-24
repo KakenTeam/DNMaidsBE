@@ -124,7 +124,6 @@ class ContractController extends Controller
                 'message' => 'This Action is Unauthorized',
             ], 403);
         }
-
     }
 
     public function findHelper(Contract $contract)
@@ -169,7 +168,6 @@ class ContractController extends Controller
         return response()->json([
             'total' =>count($available),
             'data' => $available,
-
         ]);
     }
 }
