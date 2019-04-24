@@ -30,11 +30,15 @@ class UserController extends Controller
                     'message' => 'Field name is NOT correct!',
                 ], 400);
             }
+            $user = User::where('status', '1');
+            if( $request->role) {
+                $user = $user->where('role', $request->role);
+            }
             if ($request->page != null) {
                 if ($request->field == null) {
-                    $user = User::where('status', '1')->paginate(10);
+                    $user= $user->paginate(10);
                 } else {
-                    $user = User::where('status', '1')->where($request->field, 'like', '%' . $request->search . '%')->paginate(10);
+                    $user = $user->where($request->field, 'like', '%' . $request->search . '%')->paginate(10);
                 }
 
                 $user->appends(['field' => $request->field, 'search' => $request->search]);
@@ -45,9 +49,9 @@ class UserController extends Controller
                 ], 200);
             } else {
                 if ($request->field == null) {
-                    $user = User::where('status', '1')->get();
+                    $user = $user->get();
                 } else {
-                    $user = User::where('status', '1')->where($request->field, 'like', '%' . $request->search . '%')->get();
+                    $user = $user->where($request->field, 'like', '%' . $request->search . '%')->get();
                 }
 
                 $count = $user->count();
