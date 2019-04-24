@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['namespace' => 'V1\Api'], function () {
+
     Route::get('feecalculator', 'Admin\FeeController@fee');
     //Authenticate API
     Route::group(['prefix' => 'auth',], function () {
@@ -32,6 +33,7 @@ Route::group(['namespace' => 'V1\Api'], function () {
     Route::group(['prefix' => 'client','namespace' => 'Client', 'middleware' => 'auth:api'], function () {
 
         Route::resource('contracts', 'ContractController');
+        Route::resource('feedbacks', 'FeedbackController');
     });
     Route::group(['namespace' => 'Admin', 'middleware' => 'auth:api'], function () {
         Route::resource('groups', 'GroupController');                   //Groups Management API
