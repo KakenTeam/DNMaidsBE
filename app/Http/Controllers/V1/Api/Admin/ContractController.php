@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\Api\Admin;
 
 use App\Http\Requests\UpdateContractRequest;
 use App\Models\Contract;
+use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -125,6 +126,14 @@ class ContractController extends Controller
 
     }
 
+    public function findHelper(Contract $contract){
+        $start_time = $contract->start_time;
+        $end_time = $contract->end_time;
+        
+        $result = User::with(['helpersContracts.schedule'])->where('role', 1)->orderBy('id')->get();
 
-
+        return response()->json([
+            $result
+        ]);
+    }
 }
