@@ -22,5 +22,6 @@ $factory->define(\App\Models\User::class, function (Faker $faker) {
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'image' => "https://static1.bestie.vn/Mlog/ImageContent/201707/1-20170724085644.jpg",
         'remember_token' => Str::random(10),
+        'role' => rand(0,2),
     ];
 });
