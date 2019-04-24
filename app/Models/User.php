@@ -72,9 +72,9 @@ class User extends Authenticatable
         return $this->hasMany(Contract::class, 'helper_id', 'id');
     }
 
-    public function creatorsContracts()
+    public function editorContracts()
     {
-        return $this->hasMany(Contract::class, 'contract_creator_id', 'id');
+        return $this->hasMany(Contract::class, 'last_editor_id', 'id');
     }
 
     public function feedbacks()
