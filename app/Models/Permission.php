@@ -10,7 +10,8 @@ class Permission extends Model
         'permission',
     ];
 
-    public function groups(){
+    public function groups()
+    {
         return $this->belongsToMany(Group::class, 'group_permission', 'permission_id', 'group_id');
     }
 }
