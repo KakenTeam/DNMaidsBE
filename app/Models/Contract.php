@@ -18,20 +18,28 @@ class Contract extends Model
         'service_type'
     ];
 
-    public function schedule(){
-        return $this->hasMany(ContractSchedule::class,  'contract_id' ,'id');
+    public function schedule()
+    {
+        return $this->hasMany(ContractSchedule::class, 'contract_id', 'id');
     }
 
-    public function customer(){
-        return $this->belongsTo(User::class,  'customer_id' ,'id');
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'customer_id', 'id');
     }
 
-    public function helper(){
-        return $this->belongsTo(User::class,  'helper_id' ,'id');
+    public function helper()
+    {
+        return $this->belongsTo(User::class, 'helper_id', 'id');
     }
 
-    public function creator(){
-        return $this->belongsTo(User::class,  'contract_creator_id' ,'id');
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'contract_creator_id', 'id');
     }
 
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class, 'contract_id', 'id');
+    }
 }
