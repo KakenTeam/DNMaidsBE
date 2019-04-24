@@ -13,7 +13,8 @@ class ContractSchedule extends Model
         'contract_id',
     ];
 
-    public function schedule(){
-        return $this->belongsTo(Contract::class,  'contract_id' ,'id');
+    public function schedule()
+    {
+        return $this->belongsTo(Contract::class, 'contract_id', 'id');
     }
 }
