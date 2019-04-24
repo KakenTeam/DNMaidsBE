@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['namespace' => 'V1\Api'], function () {
-
+    Route::get('find_helpers/{contract}', 'Admin\ContractController@findHelper' );
     Route::get('feecalculator', 'Admin\FeeController@fee');
     //Authenticate API
     Route::group(['prefix' => 'auth',], function () {
