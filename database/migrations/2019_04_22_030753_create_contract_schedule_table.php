@@ -17,6 +17,7 @@ class CreateContractScheduleTable extends Migration
             $table->bigIncrements('id');
             $table->time('start_time');
             $table->time('end_time');
+            $table->tinyInteger('shift');                   //0: sang, 1:chieu, 2:toi
             $table->tinyInteger('day_of_week');
             $table->unsignedInteger('contract_id');
             $table->timestamps();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\Api\Admin;
 
 use App\Http\Requests\UpdateContractRequest;
 use App\Models\Contract;
+use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -122,9 +123,5 @@ class ContractController extends Controller
                 'message' => 'This Action is Unauthorized',
             ], 403);
         }
-
     }
-
-
-
 }
