@@ -62,14 +62,8 @@ class ContractController extends Controller
 
         $contract->fill($request->all());
         $contract->customer_id = $request->user()->id;
-        //Fee Formula  HERE
 
-            $contract->fee = '200000';
-
-
-        //End Fee Formula
-
-
+        $contract->fee = $request->fee;
 
         if ($contract->save()) {
             foreach ($request->schedule as $item){

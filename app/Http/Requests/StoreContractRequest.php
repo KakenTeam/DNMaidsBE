@@ -27,7 +27,10 @@ class StoreContractRequest extends FormRequest
             'address' => 'required',
             'start_date' => 'required | date_format:Y-m-d',
             'end_date' => 'required | date_format:Y-m-d',
-            'shift' => 'required',
+            'schedule.*.shift' => 'required |numeric|min:0|max:2 ' ,
+            'schedule.*.end_time' => 'required |date_format:H:i:s',
+            'schedule.*.start_time' => 'required | date_format:H:i:s',
+            'schedule.*.day_of_week' => 'required |numeric|min:0|max:6',
         ];
     }
 }
