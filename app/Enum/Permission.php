@@ -25,4 +25,12 @@ class Permission {
     public static $VIEW_CONTRACT = "view_contract";
     public static $UPDATE_CONTRACT = "update_contract";
 
+
+    //Emp Contract
+    public static $LIST_EMP_CONTRACT = "list_emp_contact";
+    public static $VIEW_EMP_CONTRACT = "view_emp_contact";
+    public static $UPDATE_EMP_CONTRACT = "update_emp_contact";
+    public static $CREATE_EMP_CONTRACT = "create_emp_contact";
+    public static $DELETE_EMP_CONTRACT = "delete_emp_contact";
+
 }
