@@ -14,6 +14,7 @@ class HelperSeeder extends Seeder
         factory(\App\Models\User::class, 20)->create()->each(function ($user) {
             $user->role= 1;
             $user->save();
+            $user->empContract()->save(factory(\App\Models\EmployeeContract::class)->make(['emp_id'=> null]));
         });
 
     }
