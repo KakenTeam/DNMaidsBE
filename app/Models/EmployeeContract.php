@@ -19,5 +19,8 @@ class EmployeeContract extends Model
     {
         return $this->hasOne(User::class, 'emp_id', 'id');
     }
+    protected $casts = [
+      'image' => 'array',
+    ];
 
 }

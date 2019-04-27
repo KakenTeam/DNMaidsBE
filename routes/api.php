@@ -31,11 +31,14 @@ Route::group(['namespace' => 'V1\Api'], function () {
 
         });
     });
+    //Client
     Route::group(['prefix' => 'client','namespace' => 'Client', 'middleware' => 'auth:api'], function () {
 
         Route::resource('contracts', 'ContractController');
         Route::resource('feedbacks', 'FeedbackController');
     });
+
+    ///Admin
     Route::group(['namespace' => 'Admin', 'middleware' => 'auth:api'], function () {
         Route::resource('groups', 'GroupController');                   //Groups Management API
         Route::resource('users', 'UserController');                     //Users Management API
@@ -46,7 +49,7 @@ Route::group(['namespace' => 'V1\Api'], function () {
 
         Route::resource('helpers', 'HelperController');                 //Helpers Mananement API
         Route::resource('feedbacks', 'FeedbackController');             //Feedbacks Mananement API
-
+        Route::resource('emp_contracts', 'EmpContractController');      //Employees' labour Contract Management API
     });
 });
 
