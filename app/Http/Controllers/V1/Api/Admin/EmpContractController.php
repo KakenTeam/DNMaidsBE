@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\V1\Api\Admin;
 
+use App\Http\Requests\StoreEmpContractRequest;
+use App\Http\Requests\UpdateEmpContractRequest;
 use App\Models\Contract;
 use App\Models\EmployeeContract;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -36,9 +38,24 @@ class EmpContractController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreEmpContractRequest $request)
     {
-        //
+        try {
+            $emp_contract = new EmployeeContract();
+            $this->authorize('create', $emp_contract);
+            $emp_contract->fill($request->all());
+
+            if ($emp_contract->save()) {
+                return response()->json([
+                    'message' => 'Successfully Created Employee Contract.',
+                    'data' => $emp_contract,
+                ], 201);
+            }
+        } catch (AuthorizationException $e) {
+            return response()->json([
+                'message' => 'This Action is Unauthorized',
+            ], 403);
+        }
     }
 
     /**
@@ -56,7 +73,7 @@ class EmpContractController extends Controller
                 'data' => $emp_contract,
                 'message' => 'Successfully Get Employee Contract.',
             ], 200);
-        }catch (AuthorizationException $e) {
+        } catch (AuthorizationException $e) {
             return response()->json([
                 'message' => 'This Action is Unauthorized',
             ], 403);
@@ -81,9 +98,22 @@ class EmpContractController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateEmpContractRequest $request, EmployeeContract $emp_contract)
     {
-        //
+        try {
+            $this->authorize('update', $emp_contract);
+            $emp_contract->update($request->all());
+
+            return response()->json([
+                'success' => 'true',
+                'data' => $emp_contract,
+                'message' => 'Successfully Update Employee Contract.',
+            ], 200);
+        } catch (AuthorizationException $e) {
+            return response()->json([
+                'message' => 'This Action is Unauthorized',
+            ], 403);
+        }
     }
 
     /**
@@ -92,8 +122,19 @@ class EmpContractController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(EmployeeContract $emp_contract)
     {
-        //
+        try {
+            $this->authorize('delete', $emp_contract);
+            if($emp_contract->delete()) {
+                return response()->json([
+                    'message' => 'Successfully Delete Employee Contract.',
+                ], 204);
+            }
+        }catch (AuthorizationException $e) {
+            return response()->json([
+                'message' => 'This Action is Unauthorized',
+            ], 403);
+        }
     }
 }

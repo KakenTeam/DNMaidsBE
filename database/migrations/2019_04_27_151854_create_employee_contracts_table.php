@@ -20,7 +20,7 @@ class CreateEmployeeContractsTable extends Migration
             $table->date('valid_date');
             $table->date('expired_date');
             $table->integer('salary');
-            $table->text('image')->nullable();
+            $table->json('image')->nullable();
             $table->timestamps();
         });
     }
