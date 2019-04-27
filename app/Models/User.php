@@ -57,6 +57,11 @@ class User extends Authenticatable
         return $this->attributes['password'] = bcrypt($value);
     }
 
+    public function empContract()
+    {
+        return $this->hasOne(EmployeeContract::class, 'emp_id', 'id');
+    }
+
     public function groups()
     {
         return $this->belongsToMany(Group::class, 'group_user', 'user_id', 'group_id');
