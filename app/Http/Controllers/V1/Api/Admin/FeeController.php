@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\Api\Admin;
 
+use App\Http\Requests\StoreContractRequest;
 use App\Models\FeeIndex;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -9,7 +10,7 @@ use Illuminate\Support\Carbon;
 
 class FeeController extends Controller
 {
-    public function fee(Request $request)
+    public function fee(StoreContractRequest $request)
     {
         $base =  FeeIndex::where('code', 'base')->first()->value;
         $threehours = FeeIndex::where('code', 'threehours')->first()->value;
@@ -31,7 +32,7 @@ class FeeController extends Controller
             } else if ($work_time > 3) {
                 $to_money *= (1-$overthree);
             }
-            if($item['day_of_week'] == 1 || $item['day_of_week'] == 7) {
+            if($item['day_of_week'] == 1 || $item['day_of_week'] == 6) {
                 $to_money *= (1-$weekend);
             }
             $sum += $to_money;
@@ -41,7 +42,7 @@ class FeeController extends Controller
         }
 
         return response()->json([
-            $sum
+            round($sum)
         ], 200);
     }
 }

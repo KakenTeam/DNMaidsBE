@@ -86,7 +86,7 @@ class ContractController extends Controller
             } else if ($work_time > 3) {
                 $to_money *= (1-$overthree);
             }
-            if($item['day_of_week'] == 1 || $item['day_of_week'] == 7) {
+            if($item['day_of_week'] == 1 || $item['day_of_week'] == 6) {
                 $to_money *= (1-$weekend);
             }
             $sum += $to_money;
@@ -94,7 +94,7 @@ class ContractController extends Controller
         if ($week_count != 0) {
             $sum *= $week_count;
         }
-        $contract->fee = $sum;
+        $contract->fee = round($sum);
         // Fee Logic End Here
 
 
