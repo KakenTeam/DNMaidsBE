@@ -28,5 +28,10 @@ class AdminSeed extends Seeder
             'group_id' => 1,
             'permission_id' =>1,
         ]);
+        factory(\App\Models\Contract::class, 3)->create()->each(function ( $contract) use ($admin) {
+            $contract->customer_id = $admin->id;
+            $contract->save();
+            $contract->schedule()->saveMany(factory(\App\Models\ContractSchedule::class, 2)->make(['contract_id' => NULL]));
+        });
     }
 }

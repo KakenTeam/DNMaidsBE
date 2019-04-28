@@ -18,6 +18,7 @@ class ContractScheduleResource extends JsonResource
             "start_time" => $this->start_time,
             "end_time" => $this->end_time,
             "day_of_week"=> $this->day_of_week,
+            "shift" => $this->shift,
         ];
     }
 }
