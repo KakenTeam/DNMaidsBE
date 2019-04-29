@@ -17,7 +17,7 @@ class EmployeeContract extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class, 'emp_id', 'id');
+        return $this->hasOne(User::class,  'id', 'emp_id');
     }
     protected $casts = [
       'image' => 'array',
