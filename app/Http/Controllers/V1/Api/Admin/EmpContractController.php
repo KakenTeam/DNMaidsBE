@@ -4,7 +4,7 @@ namespace App\Http\Controllers\V1\Api\Admin;
 
 use App\Http\Requests\StoreEmpContractRequest;
 use App\Http\Requests\UpdateEmpContractRequest;
-use App\Models\Contract;
+
 use App\Models\EmployeeContract;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
@@ -19,7 +19,19 @@ class EmpContractController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $this->authorize('index', new EmployeeContract());
+            $contracts = EmployeeContract::with('user')->get();
+
+            return response()->json([
+                'success' => 'true',
+                'data' => $contracts,
+            ], 200);
+        }catch (AuthorizationException $e) {
+            return response()->json([
+                'message' => 'This Action is Unauthorized',
+            ], 403);
+        }
     }
 
     /**
