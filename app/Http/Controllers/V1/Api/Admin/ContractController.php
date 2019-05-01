@@ -18,14 +18,31 @@ class ContractController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             $this->authorize('index', new Contract());
-            $contracts = Contract::with(['customer', 'helper', 'creator'])
-                ->orderByRaw("FIELD(status , 'unverified', 'verified', 'assigned', 'paid','completed','canceled') ASC")
-                ->get();
-
+            $contracts = Contract::with(['customer', 'helper', 'creator']);
+            if ($request->search) {
+                if ($request->for == 'helper') {
+                    $contracts->whereHas('helper', function ($query) use ($request) {
+                        $query->where('name','like', '%'.$request->search.'%');
+                    });
+                }
+                if ($request->for == 'customer') {
+                    $contracts->whereHas('customer', function ($query) use ($request) {
+                        $query->where('name','like', '%'.$request->search.'%');
+                    });
+                }
+                if ($request->for == 'phone') {
+                    $contracts->whereHas('customer', function ($query) use ($request) {
+                        $query->where('phone','like', '%'.$request->search.'%');
+                    });
+                }
+            }
+            $contracts  = $contracts->orderByRaw("FIELD(status , 'unverified', 'verified', 'assigned', 'paid','completed','canceled') ASC")
+                ->paginate(10);
+            $contracts->appends(['search'=>$request->search, 'for'=> $request->for]);
             return response()->json([
                 'success' => 'true',
                 'data' => $contracts,
