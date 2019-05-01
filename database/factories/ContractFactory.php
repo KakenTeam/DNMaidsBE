@@ -12,5 +12,6 @@ $factory->define(\App\Models\Contract::class, function (Faker $faker) {
 	    "end_date"=> \Illuminate\Support\Carbon::now()->subDays(random_int(0,5)),
 	    "service_type" => random_int(0,1),
         "fee" => random_int(200000, 500000),
+        "status" => $faker->randomElement(['unverified', 'verified', 'assigned', 'paid','completed','canceled']),
     ];
 });
