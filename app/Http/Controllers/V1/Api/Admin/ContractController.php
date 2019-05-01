@@ -23,7 +23,7 @@ class ContractController extends Controller
         try {
             $this->authorize('index', new Contract());
             $contracts = Contract::with(['customer', 'helper', 'creator'])
-                ->orderBy('status')
+                ->orderByRaw("FIELD(status , 'unverified', 'verified', 'assigned', 'paid','completed','canceled') ASC")
                 ->get();
 
             return response()->json([
