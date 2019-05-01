@@ -23,26 +23,33 @@ class ContractController extends Controller
         try {
             $this->authorize('index', new Contract());
             $contracts = Contract::with(['customer', 'helper', 'creator']);
-            if ($request->search) {
-                if ($request->for == 'helper') {
-                    $contracts->whereHas('helper', function ($query) use ($request) {
-                        $query->where('name','like', '%'.$request->search.'%');
-                    });
-                }
-                if ($request->for == 'customer') {
-                    $contracts->whereHas('customer', function ($query) use ($request) {
-                        $query->where('name','like', '%'.$request->search.'%');
-                    });
-                }
-                if ($request->for == 'phone') {
-                    $contracts->whereHas('customer', function ($query) use ($request) {
-                        $query->where('phone','like', '%'.$request->search.'%');
-                    });
-                }
+
+            if ($request->for == 'helper') {
+                $contracts->whereHas('helper', function ($query) use ($request) {
+                    $query->where('name', 'like', '%' . $request->search . '%');
+                });
             }
-            $contracts  = $contracts->orderByRaw("FIELD(status , 'unverified', 'verified', 'assigned', 'paid','completed','canceled') ASC")
-                ->paginate(10);
-            $contracts->appends(['search'=>$request->search, 'for'=> $request->for]);
+            if ($request->for == 'customer') {
+                $contracts->whereHas('customer', function ($query) use ($request) {
+                    $query->where('name', 'like', '%' . $request->search . '%');
+                });
+            }
+            if ($request->for == 'phone') {
+                $contracts->whereHas('customer', function ($query) use ($request) {
+                    $query->where('phone', 'like', '%' . $request->search . '%');
+                });
+            }
+            if ($request->for == 'status') {
+                $contracts->where('status','like', '%' . $request->search . '%' );
+            }
+            $contracts = $contracts->orderByRaw("FIELD(status , 'unverified', 'verified', 'assigned', 'paid','completed','canceled') ASC");
+            if ($request->page) {
+                $contracts = $contracts->paginate(10);
+                $contracts->appends(['search' => $request->search, 'for' => $request->for]);
+            } else {
+                $contracts = $contracts->get();
+            }
+
             return response()->json([
                 'success' => 'true',
                 'data' => $contracts,
@@ -184,7 +191,7 @@ class ContractController extends Controller
         }
 
         return response()->json([
-            'total' =>count($available),
+            'total' => count($available),
             'data' => $available,
         ]);
     }
