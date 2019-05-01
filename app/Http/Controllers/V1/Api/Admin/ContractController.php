@@ -85,6 +85,7 @@ class ContractController extends Controller
             $this->authorize('update', $contract);
             $request->validate([
                 'status' => 'required | string',
+                'last_editor_id' => 'required | numeric',
             ]);
             $contract->update([
                 'status' => $request->status,
