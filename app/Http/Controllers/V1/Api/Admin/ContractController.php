@@ -22,7 +22,7 @@ class ContractController extends Controller
     {
         try {
             $this->authorize('index', new Contract());
-            $contracts = Contract::with(['customer', 'helper', 'creator']);
+            $contracts = Contract::with(['customer', 'helper', 'creator','schedule']);
 
             if ($request->for == 'helper') {
                 $contracts->whereHas('helper', function ($query) use ($request) {
