@@ -42,7 +42,7 @@ class ContractController extends Controller
             if ($request->for == 'status') {
                 $contracts->where('status','like', '%' . $request->search . '%' );
             }
-            $contracts = $contracts->orderByRaw("FIELD(status , 'unverified', 'verified', 'assigned', 'paid','completed','canceled') ASC");
+            $contracts = $contracts->orderBy('created_at','desc');
             if ($request->page) {
                 $contracts = $contracts->paginate(10);
                 $contracts->appends(['search' => $request->search, 'for' => $request->for]);
