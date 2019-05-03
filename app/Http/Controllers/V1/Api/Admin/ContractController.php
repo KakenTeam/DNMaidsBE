@@ -86,7 +86,7 @@ class ContractController extends Controller
             $this->authorize('view', $contract);
             return response()->json([
                 'success' => 'true',
-                'data' => $contract,
+                'data' => $contract->load(['customer', 'helper', 'creator','schedule']),
             ], 200);
         } catch (AuthorizationException $e) {
             return response()->json([
