@@ -10,12 +10,12 @@ class HelperSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
-        factory(\App\Models\User::class, 20)->create()->each(function ($user) {
+    {   $skill = \App\Models\Skill::all();
+        factory(\App\Models\User::class, 20)->create()->each(function ($user) use ($skill) {
             $user->role= 1;
             $user->save();
             $user->empContract()->save(factory(\App\Models\EmployeeContract::class)->make(['emp_id'=> null]));
+            $user->skills()->attach($skill->random(rand(1,3))->values());
         });
-
     }
 }

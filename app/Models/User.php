@@ -87,4 +87,8 @@ class User extends Authenticatable
         return $this->hasMany(Feedback::class, 'user_id', 'id');
     }
 
+    public function skills()
+    {
+        return $this->belongsToMany(Skill::class, 'helper_skill', 'helper_id', 'skill_id');
+    }
 }
