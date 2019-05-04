@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 
+use App\Models\Skill;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ContractResource extends JsonResource
@@ -32,7 +33,8 @@ class ContractResource extends JsonResource
             'schedule' => [
                 'day_of_week' => $dow,
                 'time' => ContractScheduleResource::collection($this->schedule)
-                ]
+                ],
+            'skill' =>  SkillResource::collection($this->skills),
         ];
     }
 }
