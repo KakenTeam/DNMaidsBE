@@ -25,6 +25,7 @@ class User extends Authenticatable
         'gender',
         'address',
         'phone',
+        'role',
     ];
 
     public function getFillable()

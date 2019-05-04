@@ -17,7 +17,6 @@ class CreateSkillsTable extends Migration
             $table->bigIncrements('id');
             $table->String('name');
             $table->String('code');
-            $table->timestamps();
         });
     }
 

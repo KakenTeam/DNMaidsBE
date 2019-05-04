@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -96,6 +97,7 @@ class UserController extends Controller
 
             if ($user->save()) {
                 $user->groups()->attach($request->group);
+                $user->skills()->attach($request->skill);
                 return response()->json([
                     'message' => 'Successfully created User!',
                     'info' => new UserResource($user),
@@ -155,6 +157,7 @@ class UserController extends Controller
             $this->authorize('update', $user);
             $user->update($request->all());
             $user->groups()->sync($request->group);
+            $user->skills()->sync($request->skill);
 
             return response()->json([
                 'message' => "Successfully Updated User"

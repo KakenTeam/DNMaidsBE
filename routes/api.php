@@ -47,9 +47,11 @@ Route::group(['namespace' => 'V1\Api'], function () {
         Route::resource('contracts', 'ContractController');
         Route::patch('contracts/{id}/status', 'ContractController@updateStatus' );
 
-        Route::resource('helpers', 'HelperController');                 //Helpers Mananement API
-        Route::resource('feedbacks', 'FeedbackController');             //Feedbacks Mananement API
+        Route::resource('helpers', 'HelperController');                 //Helpers Management API
+        Route::resource('feedbacks', 'FeedbackController');             //Feedbacks Management API
         Route::resource('emp_contracts', 'EmpContractController');      //Employees' labour Contract Management API
+
+        Route::resource('skills', 'SkillController');                   //Skills Mananement API
     });
 });
 
