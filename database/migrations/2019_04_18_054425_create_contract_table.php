@@ -18,6 +18,8 @@ class CreateContractTable extends Migration
             $table->unsignedInteger('customer_id');
             $table->unsignedInteger('helper_id')->nullable();
             $table->unsignedInteger('last_editor_id')->nullable();
+            $table->tinyInteger("helper_gender");
+            $table->json('skill');
             $table->string('address');
             $table->date('start_date');
             $table->date('end_date');

@@ -3,6 +3,7 @@
 use Faker\Generator as Faker;
 
 $factory->define(\App\Models\Contract::class, function (Faker $faker) {
+    $skills = \App\Models\Skill::pluck('id')->toArray();
     return [
         "customer_id" => \App\Models\User::all()->random()->id,
         "helper_id" =>  \App\Models\User::all()->random()->id,
@@ -12,6 +13,8 @@ $factory->define(\App\Models\Contract::class, function (Faker $faker) {
 	    "end_date"=> \Illuminate\Support\Carbon::now()->subDays(random_int(0,5)),
 	    "service_type" => random_int(0,1),
         "fee" => random_int(200000, 500000),
+        "helper_gender" => rand(0,1),
+        "skill" => $faker->randomElements($skills, 3),
         "status" => $faker->randomElement(['unverified', 'verified', 'assigned', 'paid','completed','canceled']),
     ];
 });
