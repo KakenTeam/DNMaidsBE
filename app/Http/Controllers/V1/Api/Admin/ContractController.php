@@ -164,7 +164,7 @@ class ContractController extends Controller
         $query = User::with(['helpersContracts.schedule'])
             ->where('role', 1)
             ->where('gender', $contract->helper_gender);
-        
+
         foreach ($contract->skills as $skill) {
             $query->whereHas('skills', function ($q) use ($skill) {
                 $q->where('skills.id', $skill->id);

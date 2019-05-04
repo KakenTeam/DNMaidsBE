@@ -17,8 +17,6 @@ class CreateHelperSkillTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('helper_id');
             $table->unsignedInteger('skill_id');
-            $table->tinyInteger('status')->default(1);
-            $table->timestamps();
         });
     }
 
