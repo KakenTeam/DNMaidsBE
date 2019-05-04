@@ -15,9 +15,14 @@ class Contract extends Model
         'end_date',
         'status',
         'fee',
-        'service_type'
+        'service_type',
+        'helper_gender',
+        'skill',
     ];
 
+    protected $casts = [
+        'skill' => 'array',
+    ];
     public function schedule()
     {
         return $this->hasMany(ContractSchedule::class, 'contract_id', 'id');
