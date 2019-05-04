@@ -11,13 +11,20 @@ class SkillSeeder extends Seeder
      */
     public function run()
     {
-        $name = ['Sửa Điện', 'Sửa Nước', 'Vệ Sinh', 'Chăm Trẻ'];
-        $code = ['dien', 'nuoc', 'vesinh', 'tre'];
-        foreach ($name as $index => $value) {
+        $name = [
+            'Dọn Dẹp Vệ Sinh',
+            'Chăm Sóc Cây Cảnh',
+            'Chăm Sóc Trẻ Em',
+            'Chăm Sóc Người Già',
+            'Chăm Sóc Thú Cưng',
+            'Nấu Ăn',
+            'Đi Chợ',
+        ];
+
+        foreach ($name as $value) {
             \Illuminate\Support\Facades\DB::table('skills')->insert([
                 'name' => $value,
-                'code' => $code[$index],
-        ]);
+            ]);
         }
 
     }
