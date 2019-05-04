@@ -14,7 +14,6 @@ $factory->define(\App\Models\Contract::class, function (Faker $faker) {
 	    "service_type" => random_int(0,1),
         "fee" => random_int(200000, 500000),
         "helper_gender" => rand(0,1),
-        "skill" => $faker->randomElements($skills, 3),
         "status" => $faker->randomElement(['unverified', 'verified', 'assigned', 'paid','completed','canceled']),
     ];
 });

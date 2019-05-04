@@ -33,6 +33,7 @@ class UserResource extends JsonResource
             'birthday' => $this->birthday,
             'image' => $this->image,
             'permission' => $per,
+            'skill' => $this->skills,
         ];
     }
 }

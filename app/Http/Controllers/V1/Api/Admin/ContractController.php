@@ -22,7 +22,7 @@ class ContractController extends Controller
     {
         try {
             $this->authorize('index', new Contract());
-            $contracts = Contract::with(['customer', 'helper', 'creator','schedule']);
+            $contracts = Contract::with(['customer', 'helper', 'creator', 'schedule', 'skills']);
 
             if ($request->for == 'helper') {
                 $contracts->whereHas('helper', function ($query) use ($request) {
@@ -40,9 +40,9 @@ class ContractController extends Controller
                 });
             }
             if ($request->for == 'status') {
-                $contracts->where('status','like', '%' . $request->search . '%' );
+                $contracts->where('status', 'like', '%' . $request->search . '%');
             }
-            $contracts = $contracts->orderBy('created_at','desc');
+            $contracts = $contracts->orderBy('created_at', 'desc');
             if ($request->page) {
                 $contracts = $contracts->paginate(10);
                 $contracts->appends(['search' => $request->search, 'for' => $request->for]);
@@ -86,7 +86,7 @@ class ContractController extends Controller
             $this->authorize('view', $contract);
             return response()->json([
                 'success' => 'true',
-                'data' => $contract->load(['customer', 'helper', 'creator','schedule']),
+                'data' => $contract->load(['customer', 'helper', 'creator', 'schedule', 'skills']),
             ], 200);
         } catch (AuthorizationException $e) {
             return response()->json([
@@ -153,15 +153,24 @@ class ContractController extends Controller
 
     public function findHelper(Contract $contract)
     {
+//        return response()->json([
+//            $contract->skills()->pluck('skill_id')
+//        ]);
         $start_date = $contract->start_date;
         $end_date = $contract->end_date;
 
         $schedule_list = $contract->with('schedule')
             ->get();
-        $result = User::with(['helpersContracts.schedule'])
+        $query = User::with(['helpersContracts.schedule'])
             ->where('role', 1)
-            ->orderBy('id')
-            ->get();
+            ->where('gender', $contract->helper_gender);
+        
+        foreach ($contract->skills as $skill) {
+            $query->whereHas('skills', function ($q) use ($skill) {
+                $q->where('skills.id', $skill->id);
+            });
+        }
+        $result = $query->orderBy('id')->get();
         $check = false;
 
         $available = [];

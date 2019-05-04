@@ -17,12 +17,13 @@ class Contract extends Model
         'fee',
         'service_type',
         'helper_gender',
-        'skill',
     ];
 
-    protected $casts = [
-        'skill' => 'array',
-    ];
+    public function skills()
+    {
+        return $this->belongsToMany(Skill::class, 'contract_skill', 'contract_id', 'skill_id');
+    }
+
     public function schedule()
     {
         return $this->hasMany(ContractSchedule::class, 'contract_id', 'id');
