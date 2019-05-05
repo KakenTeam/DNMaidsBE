@@ -153,9 +153,7 @@ class ContractController extends Controller
 
     public function findHelper(Contract $contract)
     {
-//        return response()->json([
-//            $contract->skills()->pluck('skill_id')
-//        ]);
+
         $start_date = $contract->start_date;
         $end_date = $contract->end_date;
 
