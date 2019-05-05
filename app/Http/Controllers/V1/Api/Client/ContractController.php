@@ -104,6 +104,7 @@ class ContractController extends Controller
                 $schedule->fill($item);
                 $contract->schedule()->save($schedule);
             }
+            $contract->skills()->attach($request->skill);
             return response()->json([
                 'success' => 'true',
                 'message' => 'Successfully Created Contract',
