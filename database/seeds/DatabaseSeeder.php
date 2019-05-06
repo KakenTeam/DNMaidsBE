@@ -20,5 +20,10 @@ class DatabaseSeeder extends Seeder
         $this->call(FeeIndexSeeder::class);
         $this->call(HelperSeeder::class);
         $this->call(FeedbackSeeder::class);
+        $this->call(UserGroupSeeder::class);
+        $this->call(GroupGroupSeeder::class);
+        $this->call(EmpContractGroupSeeder::class);
+        $this->call(ContractGroupSeeder::class);
+        $this->call(CustomerSeeder::class);
     }
 }

@@ -12,9 +12,10 @@ class AdminSeed extends Seeder
     public function run()
     {
         \Illuminate\Support\Facades\DB::table('users')->insert([
-            'name' => 'nhat',
+            'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('123456'),
+            'role' => 0,
         ]);
 
         $admin = \App\Models\User::whereEmail('admin@gmail.com')->first();
@@ -33,5 +34,19 @@ class AdminSeed extends Seeder
             $contract->save();
             $contract->schedule()->saveMany(factory(\App\Models\ContractSchedule::class, 2)->make(['contract_id' => NULL]));
         });
+
+        foreach (\App\Models\Group::where('id', '!=', '1')->orderBy('id','asc')->get() as $index=>$group) {
+            \Illuminate\Support\Facades\DB::table('users')->insert([
+                'name' => 'admin',
+                'email' => 'admin'.$index.'@gmail.com',
+                'password' => bcrypt('123456'),
+                'role' => 0,
+            ]);
+            $admin = \App\Models\User::whereEmail('admin'.$index.'@gmail.com')->first();
+            \Illuminate\Support\Facades\DB::table('group_user')->insert([
+                'user_id' => $admin->id,
+                'group_id' => $group->id,
+            ]);
+        }
     }
 }
