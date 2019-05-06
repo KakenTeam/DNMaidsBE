@@ -29,7 +29,7 @@ class EmpContractController extends Controller
             ], 200);
         }catch (AuthorizationException $e) {
             return response()->json([
-                'message' => 'This Action is Unauthorized',
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
             ], 403);
         }
     }
@@ -59,13 +59,13 @@ class EmpContractController extends Controller
 
             if ($emp_contract->save()) {
                 return response()->json([
-                    'message' => 'Successfully Created Employee Contract.',
+                    'message' => 'Tạo hợp đồng lao động thành công.',
                     'data' => $emp_contract,
                 ], 201);
             }
         } catch (AuthorizationException $e) {
             return response()->json([
-                'message' => 'This Action is Unauthorized',
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
             ], 403);
         }
     }
@@ -83,11 +83,11 @@ class EmpContractController extends Controller
             return response()->json([
                 'success' => 'true',
                 'data' => $emp_contract,
-                'message' => 'Successfully Get Employee Contract.',
+                'message' => 'Lấy thông tin hợp đồng lao động thành công.',
             ], 200);
         } catch (AuthorizationException $e) {
             return response()->json([
-                'message' => 'This Action is Unauthorized',
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
             ], 403);
         }
     }
@@ -119,11 +119,11 @@ class EmpContractController extends Controller
             return response()->json([
                 'success' => 'true',
                 'data' => $emp_contract,
-                'message' => 'Successfully Update Employee Contract.',
+                'message' => 'Cập nhật hợp đồng lao động thành công.',
             ], 200);
         } catch (AuthorizationException $e) {
             return response()->json([
-                'message' => 'This Action is Unauthorized',
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
             ], 403);
         }
     }
@@ -140,12 +140,12 @@ class EmpContractController extends Controller
             $this->authorize('delete', $emp_contract);
             if($emp_contract->delete()) {
                 return response()->json([
-                    'message' => 'Successfully Delete Employee Contract.',
+                    'message' => 'Xóa hợp đồng lao động thành công.',
                 ], 204);
             }
         }catch (AuthorizationException $e) {
             return response()->json([
-                'message' => 'This Action is Unauthorized',
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
             ], 403);
         }
     }
