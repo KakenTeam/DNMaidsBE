@@ -33,7 +33,7 @@ class AuthController extends Controller
         $user->fill($request->all());
         $user->save();
         return response()->json([
-            'message' => 'Successfully Created user!'
+            'message' => 'Đăng ký thành công.'
         ], 201);
     }
 
@@ -52,7 +52,7 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
         if (!Auth::attempt($credentials))
             return response()->json([
-                'message' => 'Login Failed!'
+                'message' => 'Đăng nhập thất bại.'
             ], 401);
 
         $user = $request->user();
@@ -61,7 +61,7 @@ class AuthController extends Controller
         $token->save();
 
         return response()->json([
-            'message' => 'Login Successfully!',
+            'message' => 'Đăng nhập thành công.',
             'info' => [
                 'user' => new UserResource($user),
             ],
@@ -85,7 +85,7 @@ class AuthController extends Controller
         $request->user()->token()->revoke();
 
         return response()->json([
-            'message' => 'Successfully Logged Out'
+            'message' => 'Đăng xuất thành công.'
         ], 200);
     }
 
@@ -98,7 +98,7 @@ class AuthController extends Controller
     {
         $user = new UserResource($request->user());
         return response()->json([
-            'message' => 'Successfully Get User Info!',
+            'message' => 'Lấy dữ liệu người dùng thành công.',
             'info' => $user,
         ], 200);
     }
@@ -109,7 +109,7 @@ class AuthController extends Controller
         $user->update($request->except('password'));
 
         return response()->json([
-            'message' => "Successfully Updated User",
+            'message' => "Thay đổi thông tin thành công",
         ], 200);
     }
 
@@ -132,7 +132,7 @@ class AuthController extends Controller
         ]);
 
         return response()->json([
-            'message' => "Successfully Updated Password!",
+            'message' => "Thay đổi mật khẩu thành công.",
         ], 200);
     }
 }

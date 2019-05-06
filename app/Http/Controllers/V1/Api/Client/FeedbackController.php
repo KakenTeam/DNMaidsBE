@@ -44,12 +44,12 @@ class FeedbackController extends Controller
         if ($feedback->save()) {
             return response()->json([
                 'success' => 'true',
-               'message' => 'Feedback Sent Successfully!',
+               'message' => 'Gửi phản hồi thành công',
                 'data' => $feedback,
             ], 201);
         }
         return response()->json([
-            'message' => 'Something wrong happened!',
+            'message' => 'Có lỗi đã xảy ra.',
         ], 500);
     }
 

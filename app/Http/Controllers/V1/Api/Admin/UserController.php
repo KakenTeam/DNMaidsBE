@@ -28,16 +28,16 @@ class UserController extends Controller
             if ($request->field != null && !in_array($request->field, $fillable)) {
                 return response()->json([
                     'success' => 'false',
-                    'message' => 'Field name is NOT correct!',
+                    'message' => 'Tên trường không đúng.',
                 ], 400);
             }
             $user = User::where('status', '1');
-            if( $request->role) {
+            if ($request->role) {
                 $user = $user->where('role', $request->role);
             }
             if ($request->page != null) {
                 if ($request->field == null) {
-                    $user= $user->paginate(10);
+                    $user = $user->paginate(10);
                 } else {
                     $user = $user->where($request->field, 'like', '%' . $request->search . '%')->paginate(10);
                 }
@@ -65,7 +65,7 @@ class UserController extends Controller
                 ], 200);
             }
         } catch (AuthorizationException $e) {
-            return response()->json(['message' => 'This Action is Unauthorized',], 403);
+            return response()->json(['message' => 'Bạn không có quyền để thực hiện hành động này.',], 403);
         }
 
     }
@@ -99,16 +99,16 @@ class UserController extends Controller
                 $user->groups()->attach($request->group);
                 $user->skills()->attach($request->skill);
                 return response()->json([
-                    'message' => 'Successfully created User!',
+                    'message' => 'Tạo thành công người dùng.',
                     'info' => new UserResource($user),
                 ], 201);
             }
 
             return response()->json([
-                'message' => 'Failed to create User!',
+                'message' => 'Tạo người dùng thất bại.',
             ], 500);
         } catch (AuthorizationException $e) {
-            return response()->json(['message' => 'This Action is Unauthorized',], 403);
+            return response()->json(['message' => 'Bạn không có quyền để thực hiện hành động này.',], 403);
         }
 
     }
@@ -124,11 +124,13 @@ class UserController extends Controller
         try {
             $this->authorize('view', $user);
             return response()->json([
-                'message' => 'Successfully get User!',
+                'message' => 'Lấy thông tin người dùng thành công.',
                 'info' => new UserResource($user),
             ], 200);
         } catch (AuthorizationException $e) {
-            return response()->json(['message' => 'This Action is Unauthorized',], 403);
+            return response()->json([
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
+            ], 403);
         }
     }
 
@@ -160,10 +162,12 @@ class UserController extends Controller
             $user->skills()->sync($request->skill);
 
             return response()->json([
-                'message' => "Successfully Updated User"
+                'message' => "Cập nhật thông tin người dùng thành công."
             ], 200);
         } catch (AuthorizationException $e) {
-            return response()->json(['message' => 'This Action is Unauthorized',], 403);
+            return response()->json([
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
+            ], 403);
         }
 
 
@@ -184,10 +188,12 @@ class UserController extends Controller
                 return response()->json('', 204);
             }
             return response()->json([
-                'message' => 'Failed To Delete User',
+                'message' => 'Xóa người dùng thất bại.',
             ], 500);
         } catch (AuthorizationException $e) {
-            return response()->json(['message' => 'This Action is Unauthorized',], 403);
+            return response()->json([
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
+                ], 403);
         }
 
     }

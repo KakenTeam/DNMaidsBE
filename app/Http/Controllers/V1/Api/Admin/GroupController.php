@@ -23,18 +23,19 @@ class GroupController extends Controller
             $this->authorize('index', new Group());
 
             if ($request->page != null) {
-                $groups = Group::with('permissions')->where('group_name', 'like', '%'.$request->search.'%')->orderBy('group_name', 'asc')->paginate(10);
+                $groups = Group::with('permissions')->where('group_name', 'like', '%' . $request->search . '%')->orderBy('group_name', 'asc')->paginate(10);
             } else {
-                $groups = Group::with('permissions')->where('group_name', 'like', '%'.$request->search.'%')->orderBy('group_name', 'asc')->get();
+                $groups = Group::with('permissions')->where('group_name', 'like', '%' . $request->search . '%')->orderBy('group_name', 'asc')->get();
             }
-            return response()->json(
-                $groups,
-                200);
+            return response()->json([
+                'success' => 'true',
+                'data' => $groups,
+            ], 200);
 
         } catch (AuthorizationException $e) {
             return response()->json([
-                'message' => 'This Action is Unauthorized',
-                ], 403);
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
+            ], 403);
         }
 
     }
@@ -72,17 +73,17 @@ class GroupController extends Controller
                 }
                 return response()->json([
                     'info' => $group,
-                    'message' => 'Successfully Created Group!',
+                    'message' => 'Tạo nhóm thành công.',
                 ], 201);
             }
 
             return response()->json([
-                'message' => 'Failed to create Group!',
+                'message' => 'Tạo nhóm thất bại.',
             ], 500);
         } catch (AuthorizationException $e) {
             return response()->json([
-                'message' => 'This Action is Unauthorized',
-                ], 403);
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
+            ], 403);
         }
     }
 
@@ -98,13 +99,15 @@ class GroupController extends Controller
             $this->authorize('view', $group);
 
             return response()->json(
-                $group,
+                [   'success' => 'true',
+                    'data' => $group,
+                    ],
                 200
             );
         } catch (AuthorizationException $e) {
             return response()->json([
-                'message' => 'This Action is Unauthorized',
-                ], 403);
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
+            ], 403);
         }
 
     }
@@ -141,12 +144,12 @@ class GroupController extends Controller
                 $group->users()->sync($request->users);
             }
             return response()->json([
-                'message' => "Successfully Updated Group!"
+                'message' => "Cập nhật nhóm thành công."
             ], 200);
         } catch (AuthorizationException $e) {
             return response()->json([
-                'message' => 'This Action is Unauthorized',
-                ], 403);
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
+            ], 403);
         }
 
     }
@@ -168,12 +171,12 @@ class GroupController extends Controller
                 return response()->json([], 204);
             }
             return response()->json([
-                'message' => "Failed to Update Group!"
+                'message' => "Xóa nhóm thất bại"
             ], 500);
         } catch (AuthorizationException $e) {
             return response()->json([
-                'message' => 'This Action is Unauthorized',
-                ], 403);
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
+            ], 403);
         }
     }
 }

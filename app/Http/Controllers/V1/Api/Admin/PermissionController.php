@@ -15,13 +15,15 @@ class PermissionController extends Controller
             $this->authorize('index', new Group());
             $permissons = Permission::where('id', '!=', '1')->get();
 
-            return response()->json(
-                $permissons,
+            return response()->json([
+                    'success' => 'true',
+                    'data' => $permissons
+                ],
                 200);
 
         } catch (AuthorizationException $e) {
             return response()->json([
-                'message' => 'This Action is Unauthorized',
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
             ], 403);
         }
 
