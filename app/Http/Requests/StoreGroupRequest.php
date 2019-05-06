@@ -26,7 +26,7 @@ class StoreGroupRequest extends FormRequest
     {
         return [
             'group_name' => 'required',
-            'permissions.*' => 'not_in: 1'
+            'permissions.*' => 'not_in: 1',
         ];
     }
 }

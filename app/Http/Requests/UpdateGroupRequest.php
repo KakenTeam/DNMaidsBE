@@ -25,6 +25,7 @@ class UpdateGroupRequest extends FormRequest
     {
         return [
             'group_name' => 'required',
+            'permissions.*' => 'not_in: 1',
         ];
     }
 }
