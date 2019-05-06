@@ -29,7 +29,7 @@ class ContractController extends Controller
 
         return response()->json([
             'success' => 'true',
-            'message' => 'Successfully Get Contracts',
+            'message' => 'Lấy danh sách hợp đồng thành công.',
             'info' => [
                 'total' => $contract->total(),
                 'last_item' => $contract->lastItem(),
@@ -107,12 +107,12 @@ class ContractController extends Controller
             $contract->skills()->attach($request->skill);
             return response()->json([
                 'success' => 'true',
-                'message' => 'Successfully Created Contract',
+                'message' => 'Yêu cầu thành công.',
                 'data' => $contract,
             ], 201);
         }
         return response()->json([
-            'message' => 'Something wrong happened',
+            'message' => 'Đã có lỗi xảy ra.',
         ], 500);
     }
 
