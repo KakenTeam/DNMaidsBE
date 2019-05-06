@@ -165,7 +165,7 @@ class ContractController extends Controller
         if ($contract->helper_gender == 1 || $contract->helper_gender == 0) {
             $query->where('gender', $contract->helper_gender);
         }
-        
+
         foreach ($contract->skills as $skill) {
             $query->whereHas('skills', function ($q) use ($skill) {
                 $q->where('skills.id', $skill->id);

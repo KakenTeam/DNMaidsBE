@@ -11,10 +11,12 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\User::class, 50)->create();
-        $groups = \App\Models\Group::all();
+        factory(\App\Models\User::class, 100)->create();
+        $groups = \App\Models\Group::where('id','!=','1')->get();
         \App\Models\User::all()->each(function ($user) use ($groups) {
-            $user->groups()->saveMany($groups->random(1)->values());
+            if ($user->role == 0) {
+                $user->groups()->saveMany($groups->random(1)->values());
+            }
         });
     }
 }

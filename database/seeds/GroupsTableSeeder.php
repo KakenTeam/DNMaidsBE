@@ -10,7 +10,7 @@ class GroupsTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    {   $groups = ['Admin', 'User Manage', 'New Group'];
+    {   $groups = ['Admin', 'Users Manage', 'Groups Manage', 'Contracts Manage', 'Employees Contracts Manage'];
         foreach ($groups as $group) {
             \Illuminate\Support\Facades\DB::table('groups')->insert([
                 'group_name' => $group,
@@ -18,10 +18,9 @@ class GroupsTableSeeder extends Seeder
                 'updated_at' => \Illuminate\Support\Carbon::now()->format('Y-m-d H:i:s'),
             ]);
         }
-        $per = \App\Models\Permission::all();
-        \App\Models\Group::all()->each(function ($group) use ($per) {
-            $group->permissions()->saveMany($per->random(1)->values());
-        });
-
+//        $per = \App\Models\Permission::all();
+//        \App\Models\Group::all()->each(function ($group) use ($per) {
+//            $group->permissions()->saveMany($per->random(1)->values());
+//        });
     }
 }
