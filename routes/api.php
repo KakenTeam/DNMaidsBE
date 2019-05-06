@@ -41,6 +41,7 @@ Route::group(['namespace' => 'V1\Api'], function () {
     ///Admin
     Route::group(['namespace' => 'Admin', 'middleware' => 'auth:api'], function () {
         Route::resource('groups', 'GroupController');                   //Groups Management API
+        Route::resource('permissions', 'PermissionController')->only('index');         //Permissions Management API
         Route::resource('users', 'UserController');                     //Users Management API
 
         //Contracts Management API
