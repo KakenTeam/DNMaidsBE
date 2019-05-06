@@ -53,11 +53,5 @@ Route::group(['namespace' => 'V1\Api'], function () {
 
         Route::resource('skills', 'SkillController');                   //Skills Mananement API
     });
-
-    Route::fallback(function(){
-        return response()->json([
-            'message' => 'Thật tiếc! Bạn đi lạc rồi! :( ',
-        ], 404);
-    })->name('fallback');
 });
 
