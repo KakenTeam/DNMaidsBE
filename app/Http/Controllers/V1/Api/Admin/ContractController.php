@@ -56,7 +56,7 @@ class ContractController extends Controller
             ], 200);
         } catch (AuthorizationException $e) {
             return response()->json([
-                'message' => 'This Action is Unauthorized',
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
             ], 403);
         }
 
@@ -90,7 +90,7 @@ class ContractController extends Controller
             ], 200);
         } catch (AuthorizationException $e) {
             return response()->json([
-                'message' => 'This Action is Unauthorized',
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
             ], 403);
         }
 
@@ -117,11 +117,11 @@ class ContractController extends Controller
 
             return response()->json([
                 'success' => 'true',
-                'message' => 'Successfully Updated Contract Status',
+                'message' => 'Cập nhật trạng thái hợp đồng thành công.',
             ], 200);
         } catch (AuthorizationException $e) {
             return response()->json([
-                'message' => 'This Action is Unauthorized',
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
             ], 403);
         }
 
@@ -142,11 +142,11 @@ class ContractController extends Controller
 
             return response()->json([
                 'success' => 'true',
-                'message' => 'Successfully Updated Contract',
+                'message' => 'Cập nhật hợp đồng thành công.',
             ], 200);
         } catch (AuthorizationException $e) {
             return response()->json([
-                'message' => 'This Action is Unauthorized',
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
             ], 403);
         }
     }
@@ -199,10 +199,11 @@ class ContractController extends Controller
                 $available[] = $user;
             }
         }
-
-        return response()->json([
-            'total' => count($available),
-            'data' => $available,
-        ]);
+            return response()->json([
+                'success' => 'true',
+                'message' => 'Tìm người giúp việc thành công',
+                'total' => count($available),
+                'data' => $available,
+            ]);
     }
 }

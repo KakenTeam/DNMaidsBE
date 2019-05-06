@@ -49,7 +49,7 @@ class FeedbackController extends Controller
     {
         return response()->json([
             'success' => 'true',
-            'message' => 'Successfully get feedback!',
+            'message' => 'Lấy phản hồi thành công.',
             'data' => $feedback,
         ], 200 );
     }
@@ -80,7 +80,7 @@ class FeedbackController extends Controller
         if ($result) {
             return response()->json([
                 'success' => 'true',
-                'message' => 'Successfully update feedback status!',
+                'message' => 'Cập nhật trạng thái phản hồi thành công.',
             ], 200 );
         }
         return response()->json([
