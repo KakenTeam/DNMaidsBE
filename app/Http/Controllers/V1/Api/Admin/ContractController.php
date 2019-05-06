@@ -109,10 +109,10 @@ class ContractController extends Controller
             $this->authorize('update', $contract);
             $request->validate([
                 'status' => 'required | string',
-                'last_editor_id' => 'required | numeric',
             ]);
             $contract->update([
                 'status' => $request->status,
+                'last_editor_id' => $request->user()->id,
             ]);
 
             return response()->json([
@@ -139,6 +139,8 @@ class ContractController extends Controller
         try {
             $this->authorize('update', $contract);
             $contract->update($request->all());
+            $contract->last_editor_id = $request->user()->id;
+            $contract->save();
 
             return response()->json([
                 'success' => 'true',
