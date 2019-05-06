@@ -117,7 +117,7 @@ class ContractController extends Controller
             ]);
             $contract->last_editor_id = $request->user()->id;
             $contract->save();
-            
+
             return response()->json([
                 'success' => 'true',
                 'data' => $contract,
