@@ -86,7 +86,7 @@ class ContractController extends Controller
             $this->authorize('view', $contract);
             return response()->json([
                 'success' => 'true',
-                'data' => $contract->load(['customer', 'helper', 'creator', 'schedule', 'skills','feedbacks']),
+                'data' => $contract->load(['customer', 'helper', 'creator', 'schedule', 'skills', 'feedbacks']),
             ], 200);
         } catch (AuthorizationException $e) {
             return response()->json([
@@ -106,17 +106,21 @@ class ContractController extends Controller
     public function updateStatus(Request $request, Contract $contract)
     {
         try {
+
             $this->authorize('update', $contract);
             $request->validate([
                 'status' => 'required | string',
             ]);
+
             $contract->update([
                 'status' => $request->status,
-                'last_editor_id' => $request->user()->id,
             ]);
-
+            $contract->last_editor_id = $request->user()->id;
+            $contract->save();
+            
             return response()->json([
                 'success' => 'true',
+                'data' => $contract,
                 'message' => 'Cập nhật trạng thái hợp đồng thành công.',
             ], 200);
         } catch (AuthorizationException $e) {
@@ -201,11 +205,11 @@ class ContractController extends Controller
                 $available[] = $user;
             }
         }
-            return response()->json([
-                'success' => 'true',
-                'message' => 'Tìm người giúp việc thành công',
-                'total' => count($available),
-                'data' => $available,
-            ]);
+        return response()->json([
+            'success' => 'true',
+            'message' => 'Tìm người giúp việc thành công',
+            'total' => count($available),
+            'data' => $available,
+        ]);
     }
 }
