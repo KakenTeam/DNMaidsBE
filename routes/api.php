@@ -46,13 +46,20 @@ Route::group(['namespace' => 'V1\Api'], function () {
 
         //Contracts Management API
         Route::resource('contracts', 'ContractController')->except('create', 'edit');
-        Route::patch('contracts/{contract}/status', 'ContractController@updateStatus' );
-        Route::patch('contracts/{contract}/assign', 'ContractController@updateHelper' );
+        Route::group(['prefix' =>'contracts'], function () {
+            Route::patch('{contract}/status', 'ContractController@updateStatus' );
+            Route::patch('{contract}/assign', 'ContractController@updateHelper' );
 
+        });
         Route::resource('feedbacks', 'FeedbackController')->except('create', 'edit');             //Feedbacks Management API
         Route::resource('emp_contracts', 'EmpContractController')->except('update', 'create', 'edit');      //Employees' labour Contract Management API
 
         Route::resource('skills', 'SkillController')->only('index');                   //Skills Mananement API
+
+        Route::group(['prefix' => 'statistic'], function () {
+            Route::get('new-user-count', 'StatisticController@bussinessStatisticize');
+        });
+
     });
 });
 
