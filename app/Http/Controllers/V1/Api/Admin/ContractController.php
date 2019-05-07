@@ -221,7 +221,7 @@ class ContractController extends Controller
             ]);
 
             $contract->helper_id = $request->helper_id;
-
+            $contract->status = $request->status    ;
             $contract->last_editor_id = $request->user()->id;
             $contract->save();
 
