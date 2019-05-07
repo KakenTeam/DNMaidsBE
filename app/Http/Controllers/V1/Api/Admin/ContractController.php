@@ -120,7 +120,6 @@ class ContractController extends Controller
 
             return response()->json([
                 'success' => 'true',
-                'data' => $contract,
                 'message' => 'Cập nhật trạng thái hợp đồng thành công.',
             ], 200);
         } catch (AuthorizationException $e) {
@@ -128,7 +127,6 @@ class ContractController extends Controller
                 'message' => 'Bạn không có quyền để thực hiện hành động này.',
             ], 403);
         }
-
     }
 
     /**
@@ -211,5 +209,30 @@ class ContractController extends Controller
             'total' => count($available),
             'data' => $available,
         ]);
+    }
+
+    public function updateHelper(Request $request, Contract $contract)
+    {
+        try {
+
+            $this->authorize('update', $contract);
+            $request->validate([
+                'helper_id' => 'required | helper',
+            ]);
+
+            $contract->helper_id = $request->helper_id;
+
+            $contract->last_editor_id = $request->user()->id;
+            $contract->save();
+
+            return response()->json([
+                'success' => 'true',
+                'message' => 'Cập nhật trạng thái hợp đồng thành công.',
+            ], 200);
+        } catch (AuthorizationException $e) {
+            return response()->json([
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
+            ], 403);
+        }
     }
 }

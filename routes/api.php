@@ -47,6 +47,7 @@ Route::group(['namespace' => 'V1\Api'], function () {
         //Contracts Management API
         Route::resource('contracts', 'ContractController');
         Route::patch('contracts/{contract}/status', 'ContractController@updateStatus' );
+        Route::patch('contracts/{contract}/assign', 'ContractController@updateHelper' );
 
         Route::resource('feedbacks', 'FeedbackController');             //Feedbacks Management API
         Route::resource('emp_contracts', 'EmpContractController');      //Employees' labour Contract Management API
