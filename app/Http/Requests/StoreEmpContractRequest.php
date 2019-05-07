@@ -25,7 +25,6 @@ class StoreEmpContractRequest extends FormRequest
     {
         return [
             'valid_date' => 'required|date_format:Y-m-d',
-            'expired_date' => 'required|date_format:Y-m-d|after:valid_date',
             'duration' => 'required | numeric',
             'salary' => 'required | numeric',
         ];

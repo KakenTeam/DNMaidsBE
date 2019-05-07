@@ -9,6 +9,7 @@ use App\Models\EmployeeContract;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Carbon;
 
 class EmpContractController extends Controller
 {
@@ -56,6 +57,8 @@ class EmpContractController extends Controller
             $emp_contract = new EmployeeContract();
             $this->authorize('create', $emp_contract);
             $emp_contract->fill($request->all());
+            $emp_contract->expired_date = Carbon::createFromFormat('Y-m-d', $request->valid_date, null)
+                    ->addMonths($request->duration)->format('Y-m-d');
 
             if ($emp_contract->save()) {
                 return response()->json([
@@ -103,30 +106,6 @@ class EmpContractController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateEmpContractRequest $request, EmployeeContract $emp_contract)
-    {
-        try {
-            $this->authorize('update', $emp_contract);
-            $emp_contract->update($request->all());
-
-            return response()->json([
-                'success' => 'true',
-                'data' => $emp_contract,
-                'message' => 'Cập nhật hợp đồng lao động thành công.',
-            ], 200);
-        } catch (AuthorizationException $e) {
-            return response()->json([
-                'message' => 'Bạn không có quyền để thực hiện hành động này.',
-            ], 403);
-        }
-    }
 
     /**
      * Remove the specified resource from storage.

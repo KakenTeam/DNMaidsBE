@@ -61,7 +61,11 @@ class EmployeeContractPolicy
      */
     public function create(User $user)
     {
-        //
+        $permission = $user->hasPermissions();
+        if (in_array(Permission::$CREATE_EMP_CONTRACT, $permission)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -73,7 +77,11 @@ class EmployeeContractPolicy
      */
     public function update(User $user, EmployeeContract $employeeContract)
     {
-        //
+        $permission = $user->hasPermissions();
+        if (in_array(Permission::$UPDATE_EMP_CONTRACT, $permission)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -85,7 +93,11 @@ class EmployeeContractPolicy
      */
     public function delete(User $user, EmployeeContract $employeeContract)
     {
-        //
+        $permission = $user->hasPermissions();
+        if (in_array(Permission::$DELETE_EMP_CONTRACT, $permission)) {
+            return true;
+        }
+        return false;
     }
 
     /**

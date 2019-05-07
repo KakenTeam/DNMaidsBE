@@ -34,25 +34,25 @@ Route::group(['namespace' => 'V1\Api'], function () {
     //Client
     Route::group(['prefix' => 'client','namespace' => 'Client', 'middleware' => 'auth:api'], function () {
 
-        Route::resource('contracts', 'ContractController');
-        Route::resource('feedbacks', 'FeedbackController');
+        Route::resource('contracts', 'ContractController')->only('store','index');
+        Route::resource('feedbacks', 'FeedbackController')->only('store');
     });
 
     ///Admin
     Route::group(['namespace' => 'Admin', 'middleware' => 'auth:api'], function () {
-        Route::resource('groups', 'GroupController');                   //Groups Management API
+        Route::resource('groups', 'GroupController')->except('create', 'edit');                   //Groups Management API
         Route::resource('permissions', 'PermissionController')->only('index');         //Permissions Management API
-        Route::resource('users', 'UserController');                     //Users Management API
+        Route::resource('users', 'UserController')->except('create', 'edit');                     //Users Management API
 
         //Contracts Management API
-        Route::resource('contracts', 'ContractController');
+        Route::resource('contracts', 'ContractController')->except('create', 'edit');
         Route::patch('contracts/{contract}/status', 'ContractController@updateStatus' );
         Route::patch('contracts/{contract}/assign', 'ContractController@updateHelper' );
 
-        Route::resource('feedbacks', 'FeedbackController');             //Feedbacks Management API
-        Route::resource('emp_contracts', 'EmpContractController');      //Employees' labour Contract Management API
+        Route::resource('feedbacks', 'FeedbackController')->except('create', 'edit');             //Feedbacks Management API
+        Route::resource('emp_contracts', 'EmpContractController')->except('update', 'create', 'edit');      //Employees' labour Contract Management API
 
-        Route::resource('skills', 'SkillController');                   //Skills Mananement API
+        Route::resource('skills', 'SkillController')->only('index');                   //Skills Mananement API
     });
 });
 
