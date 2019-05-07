@@ -35,6 +35,9 @@ class FeeController extends Controller
             if($item['day_of_week'] == 1 || $item['day_of_week'] == 6) {
                 $to_money *= (1-$weekend);
             }
+            if($item['shift'] == 2) {
+                $to_money *= (1-$weekend);
+            }
             $sum += $to_money;
         }
         if ($week_count != 0) {
