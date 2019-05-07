@@ -20,52 +20,36 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-
         try {
             $user = new User();
             $this->authorize('index', $user);
             $fillable = $user->getFillable();
-            if ($request->field != null && !in_array($request->field, $fillable)) {
-                return response()->json([
-                    'success' => 'false',
-                    'message' => 'Tên trường không đúng.',
-                ], 400);
-            }
+
             $user = User::where('status', '1');
-            if ($request->role) {
+            if ($request->field) {
+                if (!in_array($request->field, $fillable)) {
+                    return response()->json([
+                        'success' => 'false',
+                        'message' => 'Tên trường không đúng.',
+                    ], 400);
+                } else {
+                    $user = $user->where($request->field, 'like', '%' . $request->search . '%');
+                }
+            }
+            if ($request->role != null) {
                 $user = $user->where('role', $request->role);
             }
-            if ($request->page != null) {
-                if ($request->field == null) {
-                    $user = $user->paginate(10);
-                } else {
-                    $user = $user->where($request->field, 'like', '%' . $request->search . '%')->paginate(10);
-                }
+            $user = $user->get();
 
-                $user->appends(['field' => $request->field, 'search' => $request->search]);
-
-                return response()->json([
-                    'success' => 'true',
-                    'info' => $user,
-                ], 200);
-            } else {
-                if ($request->field == null) {
-                    $user = $user->get();
-                } else {
-                    $user = $user->where($request->field, 'like', '%' . $request->search . '%')->get();
-                }
-
-                $count = $user->count();
-                return response()->json([
-                    'success' => 'true',
-                    'data' => [
-                        'users' => UserResource::collection($user),
-                        'total' => $count,
-                    ],
-                ], 200);
-            }
+            return response()->json([
+                'count' => $user->count(),
+                'success' => 'true',
+                'data' => $user,
+            ], 200);
         } catch (AuthorizationException $e) {
-            return response()->json(['message' => 'Bạn không có quyền để thực hiện hành động này.',], 403);
+            return response()->json([
+                'message' => 'Bạn không có quyền để thực hiện hành động này.',
+            ], 403);
         }
 
     }
@@ -193,7 +177,7 @@ class UserController extends Controller
         } catch (AuthorizationException $e) {
             return response()->json([
                 'message' => 'Bạn không có quyền để thực hiện hành động này.',
-                ], 403);
+            ], 403);
         }
 
     }
