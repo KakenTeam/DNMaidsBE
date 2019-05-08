@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers\V1\Api\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Group;
 use App\Models\Permission;
 use Illuminate\Auth\Access\AuthorizationException;
 
-use App\Http\Controllers\Controller;
-
 class PermissionController extends Controller
 {
-    public function index () {
+    public function index()
+    {
         try {
             $this->authorize('index', new Group());
             $permissons = Permission::where('id', '!=', '1')->get();
 
             return response()->json([
-                    'success' => 'true',
-                    'data' => $permissons
-                ],
+                'success' => 'true',
+                'data' => $permissons
+            ],
                 200);
 
         } catch (AuthorizationException $e) {

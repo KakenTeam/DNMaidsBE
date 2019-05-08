@@ -31,7 +31,10 @@ class StoreUserRequest extends FormRequest
             'birthday' => 'required|date_format:Y-m-d|before:today',
             'phone' => 'required| numeric| digits_between:5,20',
             'address' => 'required',
-            'gender' => 'required',
+            'gender' => 'required | numeric| min:0 |max: 1',
+            'role' => 'numeric| min:0 |max: 2',
+            'skill.*' => 'numeric',
+            'group.*' => 'numeric',
         ];
     }
 }
