@@ -15,7 +15,13 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        //
+        $feedback = Feedback::with('contract','user')->get();
+
+        return response()->json([
+            'success' => 'true',
+            'data' => $feedback,
+        ], 200);
+
     }
 
     /**

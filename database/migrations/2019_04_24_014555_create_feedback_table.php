@@ -18,7 +18,7 @@ class CreateFeedbackTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('contract_id');
             $table->String('feedback');
-            $table->String('status')->default('unverified');
+            $table->String('status')->default('unresolved');
             $table->timestamps();
         });
     }
