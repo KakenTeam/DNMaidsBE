@@ -16,7 +16,7 @@ class FeedbackSeeder extends Seeder
                 'user_id' => $user->id,
                 'contract_id' => \App\Models\Contract::all()->random()->id,
                 'feedback' => str_random(10),
-                'status' => rand(0, 1) ? 'unverified' : 'verified',
+                'status' => rand(0, 1) ? 'unresolved' : 'resolved',
             ]);
         }
 
