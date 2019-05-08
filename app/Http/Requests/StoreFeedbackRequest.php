@@ -24,7 +24,7 @@ class StoreFeedbackRequest extends FormRequest
     public function rules()
     {
         return [
-            'contract_id' => 'required',
+            'contract_id' => 'required | numeric',
             'feedback' => 'required |string',
         ];
     }

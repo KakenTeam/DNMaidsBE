@@ -28,8 +28,8 @@ class UpdateProfileRequest extends FormRequest
             'name' => 'required',
             'birthday' => 'required|date_format:Y-m-d|before:today',
             'phone' => 'required| numeric| digits_between:5,20',
-            'address' => 'required',
-            'gender' => 'required',
+            'address' => 'required ',
+            'gender' => 'required | numeric| min:0|max:1',
         ];
     }
 }
