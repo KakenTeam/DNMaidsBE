@@ -24,7 +24,7 @@ class UpdateContractRequest extends FormRequest
     public function rules()
     {
         return [
-            'helper_id' =>'helper',
+            'helper_id' =>'numeric |helper',
             'address' => 'required',
             'start_date' => 'required | date_format:Y-m-d',
             'end_date' => 'required | date_format:Y-m-d',
