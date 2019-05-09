@@ -14,7 +14,7 @@ class StatisticController extends Controller
     {
 
         $request->validate([
-            'end_date' => 'date_format:Y-m-d',
+            'end_date' => 'date_format:Y-m-d|after:start_date',
             'start_date' => 'date_format:Y-m-d',
             'filter' => 'required',
         ]);
@@ -31,27 +31,22 @@ class StatisticController extends Controller
             $end_date = Carbon::createFromFormat('Y-m-d', $request->end_date);
         }
 
-        if ($start_date->DiffInDays($end_date, false) <0) {
-            $temp = $start_date;
-            $start_date = $end_date;
-            $end_date = $temp;
 
-        }
         $start = new Carbon($start_date);
-        $user = User::where('created_at', '>=', $start_date)->where('created_at', '<=', $end_date)->where('role', 2)->get();
-        $contract = Contract::where('created_at', '>=', $start_date)
-            ->where('created_at', '<=', $end_date)
+        $user = User::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->where('role', 2)->get();
+        $contract = Contract::whereDate('created_at', '>=', $start_date)
+            ->whereDate('created_at', '<=', $end_date)
             ->where('status', '!=', 'unverified')->get();
 
 
-        $canceled = Contract::where('created_at', '>=', $start_date)
-            ->where('created_at', '<=', $end_date)
+        $canceled = Contract::whereDate('created_at', '>=', $start_date)
+            ->whereDate('created_at', '<=', $end_date)
             ->where('status', 'canceled')
             ->get();
 
         //single use
-        $single = Contract::where('created_at', '>=', $start_date)
-            ->where('created_at', '<=', $end_date)
+        $single = Contract::whereDate('created_at', '>=', $start_date)
+            ->whereDate('created_at', '<=', $end_date)
             ->where('service_type', 1)
             ->where('status', '!=', 'verified')
             ->where('status', '!=', 'unverified')
@@ -59,15 +54,15 @@ class StatisticController extends Controller
         $single_income = $single->sum('fee');
 
         //longterm use
-        $longterm = Contract::where('created_at', '>=', $start_date)
-            ->where('created_at', '<=', $end_date)
+        $longterm = Contract::whereDate('created_at', '>=', $start_date)
+            ->whereDate('created_at', '<=', $end_date)
             ->where('service_type', 0)
             ->where('status', '!=', 'verified')
             ->where('status', '!=', 'unverified')
             ->get();
         $longterm_income = $longterm->sum('fee');
-        $totalincome = Contract::where('created_at', '>=', $start_date)
-            ->where('created_at', '<=', $end_date)
+        $totalincome = Contract::whereDate('created_at', '>=', $start_date)
+            ->whereDate('created_at', '<=', $end_date)
             ->where('status', '!=', 'verified')
             ->where('status', '!=', 'unverified')
             ->sum('fee');
