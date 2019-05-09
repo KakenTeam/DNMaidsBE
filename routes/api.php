@@ -57,7 +57,7 @@ Route::group(['namespace' => 'V1\Api'], function () {
         Route::resource('skills', 'SkillController')->only('index');                   //Skills Mananement API
 
         Route::group(['prefix' => 'statistic'], function () {
-            Route::get('new-user-count', 'StatisticController@bussinessStatisticize');
+            Route::get('summary', 'StatisticController@bussinessStatisticize');
         });
 
     });
