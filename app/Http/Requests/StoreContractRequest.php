@@ -26,7 +26,7 @@ class StoreContractRequest extends FormRequest
         return [
             'address' => 'required',
             'start_date' => 'required | date_format:Y-m-d',
-            'end_date' => 'required | date_format:Y-m-d| after:start_date',
+            'end_date' => 'required | date_format:Y-m-d',
             'schedule.*.shift' => 'required |numeric|min:0|max:2 ' ,
             'schedule.*.end_time' => 'required |date_format:H:i:s',
             'schedule.*.start_time' => 'required | date_format:H:i:s',
