@@ -17,6 +17,8 @@ class FeedbackSeeder extends Seeder
                 'contract_id' => \App\Models\Contract::all()->random()->id,
                 'feedback' => str_random(10),
                 'status' => rand(0, 1) ? 'unresolved' : 'resolved',
+                'created_at' => \Illuminate\Support\Carbon::now(),
+                'updated_at' => \Illuminate\Support\Carbon::now(),
             ]);
         }
 
