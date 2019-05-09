@@ -161,8 +161,7 @@ class ContractController extends Controller
         $start_date = $contract->start_date;
         $end_date = $contract->end_date;
 
-        $schedule_list = $contract->with('schedule')
-            ->get();
+
         $query = User::with(['helpersContracts.schedule', 'skills'])
             ->where('role', 1);
 
@@ -175,7 +174,7 @@ class ContractController extends Controller
                 $q->where('skills.id', $skill->id);
             });
         }
-        $result = $query->orderBy('id')->get();
+        $result = $query->orderBy('name','asc')->get();
 
         $check = false;
         $available = [];

@@ -17,16 +17,15 @@ class GroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         try {
             $this->authorize('index', new Group());
+                $groups = Group::with('permissions')
+                    ->where('id', '!=', 1)
+                    ->orderBy('group_name', 'asc')
+                    ->get();
 
-            if ($request->page != null) {
-                $groups = Group::with('permissions')->where('group_name', 'like', '%' . $request->search . '%')->orderBy('group_name', 'asc')->paginate(10);
-            } else {
-                $groups = Group::with('permissions')->where('group_name', 'like', '%' . $request->search . '%')->orderBy('group_name', 'asc')->get();
-            }
             return response()->json([
                 'success' => 'true',
                 'data' => $groups,
