@@ -27,5 +27,6 @@ $factory->define(\App\Models\User::class, function (Faker $faker) {
         'birthday' => $faker->dateTimeBetween('-40 years', '-18 years'),
         'gender' => rand(0,1),
         'role' => rand(0,2),
+        'created_at' => \Carbon\Carbon::now()->subDays(random_int(0,30)),
     ];
 });

@@ -36,7 +36,10 @@ class StatisticController extends Controller
         $user = User::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->where('role', 2)->get();
         $contract = Contract::whereDate('created_at', '>=', $start_date)
             ->whereDate('created_at', '<=', $end_date)
-            ->where('status', '!=', 'unverified')->get();
+            ->where('status', '!=', 'unverified')
+            ->where('status', '!=', 'verified')
+            ->where('status', '!=', 'canceled')
+            ->count();
 
 
         $canceled = Contract::whereDate('created_at', '>=', $start_date)
@@ -48,8 +51,9 @@ class StatisticController extends Controller
         $single = Contract::whereDate('created_at', '>=', $start_date)
             ->whereDate('created_at', '<=', $end_date)
             ->where('service_type', 1)
-            ->where('status', '!=', 'verified')
             ->where('status', '!=', 'unverified')
+            ->where('status', '!=', 'verified')
+            ->where('status', '!=', 'canceled')
             ->get();
         $single_income = $single->sum('fee');
 
@@ -57,14 +61,16 @@ class StatisticController extends Controller
         $longterm = Contract::whereDate('created_at', '>=', $start_date)
             ->whereDate('created_at', '<=', $end_date)
             ->where('service_type', 0)
-            ->where('status', '!=', 'verified')
             ->where('status', '!=', 'unverified')
+            ->where('status', '!=', 'verified')
+            ->where('status', '!=', 'canceled')
             ->get();
         $longterm_income = $longterm->sum('fee');
         $totalincome = Contract::whereDate('created_at', '>=', $start_date)
             ->whereDate('created_at', '<=', $end_date)
-            ->where('status', '!=', 'verified')
             ->where('status', '!=', 'unverified')
+            ->where('status', '!=', 'verified')
+            ->where('status', '!=', 'canceled')
             ->sum('fee');
 
         if ($request->filter == 'day') {
@@ -78,10 +84,12 @@ class StatisticController extends Controller
                 //SINGLE CONTRACT
                 $single_contract = Contract::whereDate('created_at', $start_date)
                     ->where('service_type', 1)
-                    ->where('status', '!=', 'unverified');
+                    ->where('status', '!=', 'unverified')
+                    ->where('status', '!=', 'verified')
+                    ->where('status', '!=', 'canceled');
 
-                $single_contract_count = $single_contract->where('status', '!=', 'verified')->count();
-                $single_contract_sum = $single_contract->where('status', '!=', 'verified')->sum('fee');
+                $single_contract_count = $single_contract->count();
+                $single_contract_sum = $single_contract->sum('fee');
                 $single_contract_canceled = Contract::whereDate('created_at', $start_date)
                     ->where('service_type', 1)
                     ->where('status', 'canceled')->count();
@@ -93,10 +101,12 @@ class StatisticController extends Controller
                 //LONG TERM CONTRACT
                 $longterm_contract = Contract::whereDate('created_at', $start_date)
                     ->where('service_type', 0)
-                    ->where('status', '!=', 'unverified');
+                    ->where('status', '!=', 'unverified')
+                    ->where('status', '!=', 'verified')
+                    ->where('status', '!=', 'canceled');
 
-                $longterm_contract_count = $longterm_contract->where('status', '!=', 'verified')->count();
-                $longterm_contract_sum = $longterm_contract->where('status', '!=', 'verified')->sum('fee');
+                $longterm_contract_count = $longterm_contract->count();
+                $longterm_contract_sum = $longterm_contract->sum('fee');
                 $longterm_contract_canceled = Contract::whereDate('created_at', $start_date)
                     ->where('service_type', 0)
                     ->where('status', 'canceled')->count();
@@ -127,10 +137,12 @@ class StatisticController extends Controller
                 //SINGLE CONTRACT
                 $single_contract = Contract::whereMonth('created_at', $start_date)
                     ->where('service_type', 1)
-                    ->where('status', '!=', 'unverified');
+                    ->where('status', '!=', 'unverified')
+                    ->where('status', '!=', 'verified')
+                    ->where('status', '!=', 'canceled');
 
-                $single_contract_count = $single_contract->where('status', '!=', 'verified')->count();
-                $single_contract_sum = $single_contract->where('status', '!=', 'verified')->sum('fee');
+                $single_contract_count = $single_contract->count();
+                $single_contract_sum = $single_contract->sum('fee');
                 $single_contract_canceled = Contract::whereMonth('created_at', $start_date)
                     ->where('service_type', 1)
                     ->where('status', 'canceled')->count();
@@ -142,15 +154,16 @@ class StatisticController extends Controller
                 //LONG TERM CONTRACT
                 $longterm_contract = Contract::whereMonth('created_at', $start_date)
                     ->where('service_type', 0)
-                    ->where('status', '!=', 'unverified');
+                    ->where('status', '!=', 'unverified')
+                    ->where('status', '!=', 'verified')
+                    ->where('status', '!=', 'canceled');
 
-                $longterm_contract_count = $longterm_contract->where('status', '!=', 'verified')->count();
-                $longterm_contract_sum = $longterm_contract->where('status', '!=', 'verified')->sum('fee');
+                $longterm_contract_count = $longterm_contract->count();
+                $longterm_contract_sum = $longterm_contract->sum('fee');
                 $longterm_contract_canceled = Contract::whereMonth('created_at', $start_date)
                     ->where('service_type', 0)
                     ->where('status', 'canceled')->count();
                 $longterm_contract_per_unit = [
-
                     'count' => $longterm_contract_count,
                     'sum' => $longterm_contract_sum,
                     'canceled' => $longterm_contract_canceled,
@@ -175,10 +188,10 @@ class StatisticController extends Controller
                 'statistic' => $statistic,
                 'total_new_customer_count' => count($user),
                 'total_contract' => [
-                    'new_contract_count' => count($contract),
+                    'new_contract_count' => $contract,
                     'canceled_contract_count' => count($canceled),
                     'total_income' => $totalincome,
-                    'onetime_contract' => [
+                    'single_contract' => [
                         'count' => count($single),
                         'total_income' => $single_income,
                     ],

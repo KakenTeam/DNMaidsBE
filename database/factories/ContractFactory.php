@@ -15,5 +15,6 @@ $factory->define(\App\Models\Contract::class, function (Faker $faker) {
         "fee" => random_int(200000, 500000),
         "helper_gender" => rand(0,1),
         "status" => $faker->randomElement(['unverified', 'verified', 'assigned', 'paid','completed','canceled']),
+        'created_at' => \Carbon\Carbon::now()->subDays(random_int(0,30)),
     ];
 });
