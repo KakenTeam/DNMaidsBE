@@ -14,7 +14,7 @@ class StatisticController extends Controller
     {
 
         $request->validate([
-            'end_date' => 'date_format:Y-m-d|after: start_date',
+            'end_date' => 'date_format:Y-m-d',
             'start_date' => 'date_format:Y-m-d',
             'filter' => 'required',
         ]);
@@ -22,7 +22,7 @@ class StatisticController extends Controller
         $end_date = Carbon::now('Asia/Ho_Chi_Minh')->endOfMonth();
         $start_date = Carbon::now('Asia/Ho_Chi_Minh')->startOfMonth();
 
-        $start = Carbon::now('Asia/Ho_Chi_Minh')->startOfMonth();
+
 
         if ($request->start_date) {
             $start_date = Carbon::createFromFormat('Y-m-d', $request->start_date);
@@ -30,6 +30,14 @@ class StatisticController extends Controller
         if ($request->end_date) {
             $end_date = Carbon::createFromFormat('Y-m-d', $request->end_date);
         }
+
+        if ($start_date->DiffInDays($end_date, false) <0) {
+            $temp = $start_date;
+            $start_date = $end_date;
+            $end_date = $temp;
+
+        }
+        $start = new Carbon($start_date);
         $user = User::where('created_at', '>=', $start_date)->where('created_at', '<=', $end_date)->where('role', 2)->get();
         $contract = Contract::where('created_at', '>=', $start_date)
             ->where('created_at', '<=', $end_date)
@@ -166,8 +174,8 @@ class StatisticController extends Controller
         }
 
         return response()->json([
-            'end_date' => $end_date->format('Y-m-d'),
             'start_date' => $start->format('Y-m-d'),
+            'end_date' => $end_date->format('Y-m-d'),
             'data' => [
                 'statistic' => $statistic,
                 'total_new_customer_count' => count($user),
