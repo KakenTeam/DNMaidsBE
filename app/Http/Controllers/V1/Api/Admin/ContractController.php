@@ -163,7 +163,7 @@ class ContractController extends Controller
 
         $schedule_list = $contract->with('schedule')
             ->get();
-        $query = User::with(['helpersContracts.schedule'])
+        $query = User::with(['helpersContracts.schedule', 'skills'])
             ->where('role', 1);
 
         if ($contract->helper_gender == 1 || $contract->helper_gender == 0) {
