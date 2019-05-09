@@ -19,8 +19,11 @@ class StatisticController extends Controller
             'filter' => 'required',
         ]);
 
-        $end_date = Carbon::now()->endOfMonth();
-        $start_date = Carbon::now()->startOfMonth();
+        $end_date = Carbon::now('Asia/Ho_Chi_Minh')->endOfMonth();
+        $start_date = Carbon::now('Asia/Ho_Chi_Minh')->startOfMonth();
+
+        $start = Carbon::now('Asia/Ho_Chi_Minh')->startOfMonth();
+
         if ($request->start_date) {
             $start_date = Carbon::createFromFormat('Y-m-d', $request->start_date);
         }
@@ -158,12 +161,13 @@ class StatisticController extends Controller
                     ]
                 ];
                 $start_date = $start_date->addMonth();
+                if ($diff == 0) break;
             }
         }
 
         return response()->json([
-            'end_date' => $end_date,
-            'start_date' => $start_date,
+            'end_date' => $end_date->format('Y-m-d'),
+            'start_date' => $start->format('Y-m-d'),
             'data' => [
                 'statistic' => $statistic,
                 'total_new_customer_count' => count($user),
