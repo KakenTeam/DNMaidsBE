@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -133,6 +134,28 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => "Thay đổi mật khẩu thành công.",
+        ], 200);
+    }
+    public function updateAva(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|max:2048'
+        ]);
+        $user = $request->user();
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $name = time() . $file->getClientOriginalName();
+            $filePath =$name;
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $user->update([
+                'image' => $name,
+            ]);
+        }
+
+
+
+        return response()->json([
+            'message' => "Thay đổi Ảnh đại diện thành công",
         ], 200);
     }
 }
