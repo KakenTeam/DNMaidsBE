@@ -44,7 +44,7 @@ class UserController extends Controller
             return response()->json([
                 'count' => $user->count(),
                 'success' => 'true',
-                'data' => $user,
+                'data' => UserResource::collection($user),
             ], 200);
         } catch (AuthorizationException $e) {
             return response()->json([
