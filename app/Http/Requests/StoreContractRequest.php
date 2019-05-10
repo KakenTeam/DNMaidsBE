@@ -28,7 +28,7 @@ class StoreContractRequest extends FormRequest
             'start_date' => 'required | date_format:Y-m-d',
             'end_date' => 'required | date_format:Y-m-d',
             'schedule.*.shift' => 'required |numeric|min:0|max:2 ' ,
-            'schedule.*.end_time' => 'required |date_format:H:i:s',
+            'schedule.*.end_time' => 'required |date_format:H:i:s|after:schedule.*.start_time',
             'schedule.*.start_time' => 'required | date_format:H:i:s',
             'schedule.*.day_of_week' => 'required |numeric|min:0|max:6',
             'helper_gender' => 'required | numeric | min:0 |max:2',
