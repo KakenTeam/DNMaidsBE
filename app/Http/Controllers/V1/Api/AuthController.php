@@ -145,10 +145,10 @@ class AuthController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $name = time() . $file->getClientOriginalName();
-            $filePath =$name;
+            $filePath = 'avatars/'.$name;
             Storage::disk('s3')->put($filePath, file_get_contents($file),'public');
             $user->update([
-                'image' => $name,
+                'image' => $filePath,
             ]);
         }
 
