@@ -20,7 +20,7 @@ $factory->define(\App\Models\User::class, function (Faker $faker) {
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        'image' => "https://static1.bestie.vn/Mlog/ImageContent/201707/1-20170724085644.jpg",
+        'image' => "1557461973caffeine-close-up-coffee-539432.jpg",
         'remember_token' => Str::random(10),
         'address' => $faker->address,
         'phone' => $faker->unique()->numberBetween(1000000000, 1999999999),

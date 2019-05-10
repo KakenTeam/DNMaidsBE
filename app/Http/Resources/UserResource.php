@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class UserResource extends JsonResource
 {
@@ -22,7 +23,10 @@ class UserResource extends JsonResource
                 }
             }
         }
-
+        $url = null;
+        if ($this->image){
+            $url = Storage::cloud()->url($this->image);
+        }
         return [
             'id' => $this->id,
             'email' => $this->email,
@@ -31,10 +35,11 @@ class UserResource extends JsonResource
             'address' => $this->address,
             'gender' => $this->gender,
             'birthday' => $this->birthday,
-            'image' => $this->image,
+            'image' =>$url,
             'role' => $this->role,
             'permission' => $per,
             'skill' => $this->skills,
+            'status' => $this->status,
 
         ];
     }
