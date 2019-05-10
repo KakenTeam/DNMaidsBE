@@ -146,7 +146,7 @@ class AuthController extends Controller
             $file = $request->file('image');
             $name = time() . $file->getClientOriginalName();
             $filePath =$name;
-            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            Storage::disk('s3')->put($filePath, file_get_contents($file),'public');
             $user->update([
                 'image' => $name,
             ]);
